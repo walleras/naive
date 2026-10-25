@@ -20,17 +20,13 @@ CREATE ExShowcase AS TextBox
     WITH text = "showcase -- every HTML-parity element", link = "/examples/showcase.nve"
     AT X.Center, Y.180
 
-CREATE ExSpreadsheet AS TextBox
-    WITH text = "spreadsheet -- formulas as set membership", link = "/examples/spreadsheet.nve"
-    AT X.Center, Y.220
-
 CREATE ExGrid AS TextBox
     WITH text = "grid_demo -- virtual grid and scrolling", link = "/examples/grid_demo.nve"
-    AT X.Center, Y.260
+    AT X.Center, Y.220
 
 CREATE ExFunctions AS TextBox
     WITH text = "functions -- user-defined FUNCTION sets", link = "/examples/functions.nve"
-    AT X.Center, Y.300
+    AT X.Center, Y.260
 
 CREATE ExDemo AS TextBox
     WITH text = "demo -- the Naive playground (start here)", link = "/examples/demo.nve"

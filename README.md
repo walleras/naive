@@ -11,9 +11,7 @@ and no JavaScript, only sets and the verbs that move things between them.
 The viewer is a native Windows program written in portable C99, with a mock
 "internet" (a folder of `.nve` pages you browse by route or by `domain.com`).
 
-| A spreadsheet, written entirely in Naive | A playground: tabs, counter, colours, maths |
-|---|---|
-| ![spreadsheet](docs/images/spreadsheet.png) | ![playground](docs/images/playground.png) |
+![the Naive playground: tabs, a counter, colours and maths, all written in Naive](docs/images/playground.png)
 
 ## A taste
 
@@ -67,6 +65,11 @@ including the parser, set engine, expression evaluator and function
 interpreter, is portable C99 behind the thin `SmCanvas` / `SmApp` interface in
 `src/sm_render.h`, so another backend means reimplementing that one file.
 
+## Learn it
+
+The quick coding guide is [`docs/guide.md`](docs/guide.md). The design thinking behind
+the language is in [`naive_design_doc.md`](naive_design_doc.md).
+
 ## Examples
 
 Open them from the home page (`/examples`) or directly from `examples/`:
@@ -74,7 +77,6 @@ Open them from the home page (`/examples`) or directly from `examples/`:
 | File | What it shows |
 |---|---|
 | `demo.nve` | The playground: tabs, a counter, colour and style sets, recursive and iterative maths |
-| `spreadsheet.nve` | A spreadsheet in Naive: ranges as sets, live formulas, name box, formula bar, selection |
 | `functions.nve` | User-defined `FUNCTION` sets and event bindings |
 | `showcase.nve` | Every HTML-parity element: headings, lists, tables, forms, images, links |
 | `form.nve` | Form inputs gathered as a set and submitted |
@@ -94,13 +96,13 @@ Open them from the home page (`/examples`) or directly from `examples/`:
 - **Formulas.** Any widget whose `content` starts with `=` is a live formula; its
   dependencies become members, so editing a cell recomputes everything downstream
   with no handler written. `SUM`, `AVG`, `MIN`, `MAX`, `COUNT` work over the members
-  of a set, which is how spreadsheet ranges (`ColB`, `Row2`) are expressed.
+  of a set.
 - **Functions** are `FUNCTION` sets with Lua-style bodies: `IF/ELSEIF/ELSE/END`,
   `WHILE ... DO ... END`, `LOCAL`, `RETURN`, recursion, `..` concatenation and
   `== ~=` comparisons. `CREATE f AS FUNCTION, OnClick, Button_1` binds a function
   to an event.
 - **`FOCUS`** is a built-in set holding the widget that has keyboard focus, so a page
-  can react to selection (`ON CHANGE OF FOCUS WHERE B2 IS FOCUS`).
+  can react to selection (`ON CHANGE OF FOCUS WHERE Field IS FOCUS`).
 - **Layout** is `X.Left/Center/Right/n`, `Y.Top/Center/n`, optional `width`,
   `height`, `align` and `bgcolor` properties, and `DEFINE GRID X 800, Y 1400` for a
   window-scaling virtual canvas.
@@ -116,8 +118,7 @@ src/        the engine, parser, interpreter, mock server and Win32 backend
 examples/   standalone example pages
 www/        the mock internet the viewer browses (index.nve, docs, xyz.com/, ...)
 build/      build.sh
-tools/      gen_spreadsheet.pl: generates examples/spreadsheet.nve
-docs/       images used by this README
+docs/       the coding guide and images used by this README
 ```
 
 ## Status and limits
@@ -131,4 +132,4 @@ The project was first written to strict ISO C89 as a "could this have been built
 
 ## License
 
-Not chosen yet.
+[MIT](LICENSE).
