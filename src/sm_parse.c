@@ -1,6 +1,6 @@
-/* sm_parse.c  --  SeSaML document parser.
+/* sm_parse.c  --  Naive document parser.
  *
- * Implements sm_doc_load_string: lex the whole .sml source, group tokens into
+ * Implements sm_doc_load_string: lex the whole .nve source, group tokens into
  * indented logical lines, then recursively descend building live set state
  * (design doc S12 -- parsing IS evaluation; there is no separate AST). Block
  * structure for CREATE clauses and ON-event bodies is indentation-based;

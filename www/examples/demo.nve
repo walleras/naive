@@ -1,4 +1,4 @@
--- demo.sml -- the SeSaML playground: tabs, a counter, colours, and a little maths.
+-- demo.nve -- the Naive playground: tabs, a counter, colours, and a little maths.
 --
 -- No HTML, no CSS, no JavaScript. Every widget is a set and every interaction
 -- is a membership change:
@@ -9,7 +9,7 @@
 DEFINE GRID X 720
 
 CREATE Title AS H1
-    WITH text = "SeSaML Playground"
+    WITH text = "Naive Playground"
     AT X.Center, Y.8
 
 CREATE Tagline AS TextBox
@@ -494,7 +494,7 @@ CREATE AboutHead AS H3
     MEMBER OF PAbout
 
 CREATE About1 AS TextBox
-    WITH text = "This page is one .sml file: no HTML, no CSS, no JavaScript."
+    WITH text = "This page is one .nve file: no HTML, no CSS, no JavaScript."
     AT X.Center, Y.185
     MEMBER OF PAbout
 

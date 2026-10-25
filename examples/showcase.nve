@@ -1,7 +1,7 @@
--- showcase.sml -- every HTML-parity element SeSaML supports, on one page.
+-- showcase.nve -- every HTML-parity element Naive supports, on one page.
 
 CREATE Title AS H1
-    WITH text = "SeSaML HTML Showcase"
+    WITH text = "Naive HTML Showcase"
     AT X.Center, Y.10
 
 -- Text styling (styling is set membership)

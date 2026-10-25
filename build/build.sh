@@ -1,7 +1,7 @@
 #!/bin/sh
-# build.sh -- drive the SeSaML build without make.
+# build.sh -- drive the Naive build without make.
 #
-#   sh build/build.sh sml      build the viewer (build/sesaml.exe)  [Windows + MinGW]
+#   sh build/build.sh viewer      build the viewer (build/naive.exe)  [Windows + MinGW]
 #   sh build/build.sh check    compile the portable core only; works on any OS
 #   sh build/build.sh test     build and run tests/test_*.c, if a tests/ folder exists
 #   sh build/build.sh clean    remove build products
@@ -25,7 +25,7 @@ CORE_SRCS="$SRC/sm_common.c $SRC/sm_value.c $SRC/sm_schema.c $SRC/sm_set.c \
 $SRC/sm_lex.c $SRC/sm_expr.c $SRC/sm_func.c $SRC/sm_doc.c $SRC/sm_parse.c \
 $SRC/sm_server.c"
 
-target=${1:-sml}
+target=${1:-viewer}
 
 case "$target" in
   clean)
@@ -34,7 +34,7 @@ case "$target" in
     ;;
   check)
     echo "== compiling core (ISO C99, -pedantic-errors -Werror) =="
-    for f in $CORE_SRCS "$SRC/sml_main.c"; do
+    for f in $CORE_SRCS "$SRC/naive_main.c"; do
       $CC $CORE_FLAGS -c "$f" -o "${TMPDIR:-${TEMP:-/tmp}}/sm_check_$$.o"
     done
     rm -f "${TMPDIR:-${TEMP:-/tmp}}/sm_check_$$.o"
@@ -59,12 +59,12 @@ case "$target" in
     done
     exit $rc
     ;;
-  sml)
-    # The .sml page viewer: portable C99 for engine + parser + viewer; only the
+  viewer)
+    # The .nve page viewer: portable C99 for engine + parser + viewer; only the
     # Win32 backend uses the relaxed gnu99 dialect.
     echo "== compiling engine + parser + viewer (ISO C99) =="
     OBJ=""
-    for f in $CORE_SRCS "$SRC/sml_main.c"; do
+    for f in $CORE_SRCS "$SRC/naive_main.c"; do
       o="$OUT/$(basename "$f" .c).o"
       $CC $CORE_FLAGS -c "$f" -o "$o"
       OBJ="$OBJ $o"
@@ -72,11 +72,11 @@ case "$target" in
     echo "== compiling Win32 backend (gnu99, relaxed) =="
     $CC -std=gnu99 -Wall -I"$SRC" -c "$SRC/sm_win32.c" -o "$OUT/sm_win32.o"
     echo "== linking =="
-    $CC $OBJ "$OUT/sm_win32.o" -o "$OUT/sesaml.exe" -mwindows -lgdi32 -luser32 -lshell32
-    echo "built $OUT/sesaml.exe  (run: build/sesaml.exe examples/hello.sml)"
+    $CC $OBJ "$OUT/sm_win32.o" -o "$OUT/naive.exe" -mwindows -lgdi32 -luser32 -lshell32
+    echo "built $OUT/naive.exe  (run: build/naive.exe examples/hello.nve)"
     ;;
   *)
-    echo "usage: sh build/build.sh [sml|check|test|clean]" >&2
+    echo "usage: sh build/build.sh [viewer|check|test|clean]" >&2
     exit 2
     ;;
 esac

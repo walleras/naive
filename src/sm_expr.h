@@ -1,9 +1,9 @@
-/* sm_expr.h  --  SeSaML expression parser + evaluator.
+/* sm_expr.h  --  Naive expression parser + evaluator.
  *                Grammar sketch S8 (C-style precedence).
  *
  * An expression is parsed once into a small tree and retained; a Webcel cell
  * re-evaluates its tree on every recompute, resolving bareword identifiers as
- * set references *at eval time* so live value changes are seen. SeSaML has no
+ * set references *at eval time* so live value changes are seen. Naive has no
  * booleans: comparisons and logical ops yield the number 1 or 0, and
  * truthiness is "nonzero number / nonempty string / nonempty set".
  *
@@ -44,7 +44,7 @@ int sm_expr_collect_names(const SmExpr *e, SmWorld *w, const char **out, int cap
 /* Evaluate against a world. `self` is the set the expression belongs to (a
  * cell), used to resolve any self-relative references; may be NULL. Returns
  * an owned SmValue -- clear it with sm_value_clear. Unresolvable names
- * evaluate to NONE (SeSaML has no null; an absent reference contributes
+ * evaluate to NONE (Naive has no null; an absent reference contributes
  * nothing) rather than raising. */
 SmValue sm_expr_eval(const SmExpr *e, SmWorld *w, SmSet *self);
 

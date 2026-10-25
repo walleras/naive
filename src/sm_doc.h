@@ -1,6 +1,6 @@
-/* sm_doc.h  --  SeSaML document runtime: a .sml file as a live web page.
+/* sm_doc.h  --  Naive document runtime: a .nve file as a live web page.
  *
- * A SeSaML document is a flat sequence of CREATE / mutation / ON-event
+ * A Naive document is a flat sequence of CREATE / mutation / ON-event
  * statements. Parsing produces live set state directly (design doc S12: no
  * separate AST). This module owns:
  *   - the SmWorld the document builds,
@@ -50,14 +50,14 @@ typedef struct SmHandler SmHandler; /* opaque */
 SmDoc   *sm_doc_new(void);
 void     sm_doc_free(SmDoc *d);
 
-/* Parse `src` (a whole .sml document) into the doc. Returns SM_ERR_PARSE and
+/* Parse `src` (a whole .nve document) into the doc. Returns SM_ERR_PARSE and
  * fills err on failure. May be called once per doc. */
 SmStatus sm_doc_load_string(SmDoc *d, const char *src, char *err, size_t errcap);
 
 /* Read a file and load it. */
 SmStatus sm_doc_load_file(SmDoc *d, const char *path, char *err, size_t errcap);
 
-/* Navigate to a route: ask the mock server (sm_server) for the route's SML,
+/* Navigate to a route: ask the mock server (sm_server) for the route's Naive,
  * replace the current page with it, and on any failure show an error page.
  * Safe to call from outside event dispatch (e.g. the initial page load); a
  * link click defers to this via the runtime. */
@@ -67,7 +67,7 @@ SmStatus sm_doc_navigate(SmDoc *d, const char *route);
  * echoes the fields back as the new page. */
 SmStatus sm_doc_post(SmDoc *d, const char *route, const char *body);
 
-/* Open a local .sml file directly, replacing the current page (drag-and-drop
+/* Open a local .nve file directly, replacing the current page (drag-and-drop
  * target on the Win32 backend). Pushed onto history like a navigation. */
 SmStatus sm_doc_open_file(SmDoc *d, const char *path);
 

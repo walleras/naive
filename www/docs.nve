@@ -1,4 +1,4 @@
--- www/docs.sml -- served for route "/docs"
+-- www/docs.nve -- served for route "/docs"
 
 CREATE Home AS TextBox
     WITH text = "<- Home", link = "/"

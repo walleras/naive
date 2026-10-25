@@ -1,4 +1,4 @@
--- form.sml -- a form: inputs live in a set that is added to the submit box.
+-- form.nve -- a form: inputs live in a set that is added to the submit box.
 -- Submit gathers only the input widgets in that set (labels are ignored).
 
 CREATE Title AS H2

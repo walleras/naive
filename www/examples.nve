@@ -1,0 +1,37 @@
+-- www/examples.nve -- served for route "/examples": index of every example page
+
+CREATE Home AS TextBox
+    WITH text = "<- Home", link = "/"
+    AT X.Left, Y.Top
+
+CREATE Title AS H1
+    WITH text = "Examples"
+    AT X.Center, Y.30
+
+CREATE ExHello AS TextBox
+    WITH text = "hello -- a minimal page", link = "/examples/hello.nve"
+    AT X.Center, Y.100
+
+CREATE ExForm AS TextBox
+    WITH text = "form -- inputs gathered into a submit set", link = "/examples/form.nve"
+    AT X.Center, Y.140
+
+CREATE ExShowcase AS TextBox
+    WITH text = "showcase -- every HTML-parity element", link = "/examples/showcase.nve"
+    AT X.Center, Y.180
+
+CREATE ExSpreadsheet AS TextBox
+    WITH text = "spreadsheet -- formulas as set membership", link = "/examples/spreadsheet.nve"
+    AT X.Center, Y.220
+
+CREATE ExGrid AS TextBox
+    WITH text = "grid_demo -- virtual grid and scrolling", link = "/examples/grid_demo.nve"
+    AT X.Center, Y.260
+
+CREATE ExFunctions AS TextBox
+    WITH text = "functions -- user-defined FUNCTION sets", link = "/examples/functions.nve"
+    AT X.Center, Y.300
+
+CREATE ExDemo AS TextBox
+    WITH text = "demo -- the Naive playground (start here)", link = "/examples/demo.nve"
+    AT X.Center, Y.60

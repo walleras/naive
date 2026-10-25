@@ -1,11 +1,11 @@
--- www/about.sml -- served for route "/about"
+-- www/about.nve -- served for route "/about"
 
 CREATE Home AS TextBox
     WITH text = "<- Home", link = "/"
     AT X.Left, Y.Top
 
 CREATE Title AS TextBox
-    WITH text = "About SeSaML"
+    WITH text = "About Naive"
     AT X.Center, Y.Top
 
 CREATE Body AS TextBox

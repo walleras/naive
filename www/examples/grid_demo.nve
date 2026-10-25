@@ -1,4 +1,4 @@
--- grid_demo.sml -- DEFINE GRID X/Y: a virtual coordinate system that scales
+-- grid_demo.nve -- DEFINE GRID X/Y: a virtual coordinate system that scales
 -- to whatever the actual window is, plus scrolling for content that runs
 -- past the visible area. Neither X nor Y is a hard boundary.
 

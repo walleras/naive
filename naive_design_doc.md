@@ -1,4 +1,4 @@
-# SeSaML / SetScript — Design Document
+# Naive / SetScript — Design Document
 
 *A set-theoretic scripting language and document model, as if shipped by Netscape in 1995.*
 
@@ -6,15 +6,15 @@
 
 ## 1. Premise
 
-HTML plus the DOM is one particular answer to "how do you represent a document as data." SeSaML is the answer that never gets asked: there is no DOM, because there was never a document-vs-tree distinction to invent. There are only sets, and membership.
+HTML plus the DOM is one particular answer to "how do you represent a document as data." Naive is the answer that never gets asked: there is no DOM, because there was never a document-vs-tree distinction to invent. There are only sets, and membership.
 
 The one-line pitch, as stated directly: **COBOL and SeQL had a baby, raised declaratively by React.**
 
 The counterfactual: in 1995, before HTML calcified into standardized infrastructure, a sufficiently compelling demo at Netscape could have made HTML the thing that never became the standard, rather than the thing that had to be worked around. By 1997 the window is closed — the DOM spec is being written, IE4 is shipping. In 1995 the market leader could still ship something else as *the* format.
 
-SetScript is the applied, shippable layer of this idea, constrained to real 1995 hardware and Win32. The pure, unconstrained version of the same idea is a separate thought experiment (sometimes called STL) — publishable as PL-theory philosophy, not meant to ship. SeSaML sits at the applied end: it's SetScript's language, aimed at being a document format.
+SetScript is the applied, shippable layer of this idea, constrained to real 1995 hardware and Win32. The pure, unconstrained version of the same idea is a separate thought experiment (sometimes called STL) — publishable as PL-theory philosophy, not meant to ship. Naive sits at the applied end: it's SetScript's language, aimed at being a document format.
 
-**Important distinction from a related, separate project:** SeSaML is not the austere symbolic esolang sometimes discussed alongside it (internally called "Russell's Nightmare" in some sessions), which deliberately strips everything down to bare set-algebra symbols (`∈ ∉ ∪ ∩ ⊆` etc.) with no concession to readability. SeSaML is explicitly the *opposite* choice: it keeps ordinary English-keyword control flow, ordinary infix arithmetic, and a real (if minimal) standard library, because it's meant to be shippable and learnable by ordinary 1995 web developers, not a foundations-of-mathematics thought experiment. Where the pure/symbolic language says "there is no `+`, only `∪`," SeSaML just has `+`.
+**Important distinction from a related, separate project:** Naive is not the austere symbolic esolang sometimes discussed alongside it (internally called "Russell's Nightmare" in some sessions), which deliberately strips everything down to bare set-algebra symbols (`∈ ∉ ∪ ∩ ⊆` etc.) with no concession to readability. Naive is explicitly the *opposite* choice: it keeps ordinary English-keyword control flow, ordinary infix arithmetic, and a real (if minimal) standard library, because it's meant to be shippable and learnable by ordinary 1995 web developers, not a foundations-of-mathematics thought experiment. Where the pure/symbolic language says "there is no `+`, only `∪`," Naive just has `+`.
 
 ---
 
@@ -22,7 +22,7 @@ SetScript is the applied, shippable layer of this idea, constrained to real 1995
 
 **Everything is a set. Membership is the only state. Migration (moving an element into or out of a set) is the only mutation.**
 
-No numbers, no strings, no booleans, no DOM nodes, no functions as a distinct kind of thing — all of these are modeled as sets or as membership in sets. This is a smaller axiomatic core than Lisp: Lisp still has atoms, cons cells, and nil as distinct kinds of thing. SeSaML has one kind of thing.
+No numbers, no strings, no booleans, no DOM nodes, no functions as a distinct kind of thing — all of these are modeled as sets or as membership in sets. This is a smaller axiomatic core than Lisp: Lisp still has atoms, cons cells, and nil as distinct kinds of thing. Naive has one kind of thing.
 
 Consequences that fall out for free, rather than being separately designed:
 
@@ -128,13 +128,13 @@ This doesn't conflict with I/O: reading a file or a network response just *adds 
 
 ## 9. Self-Membership
 
-Self-membership is simply **disallowed by axiom** — no set may contain itself. This is stricter than ZFC's regularity axiom (which rules out self-membership as a *derived consequence* of the axiom of foundation) but simpler: SeSaML just states it directly rather than deriving it from a stratified type theory (à la Russell) or from foundation-axiom machinery. Practically this also means the set of all functions, or any similarly broad category set, is well-defined without re-deriving Russell's Paradox: it's a proper-class-like set of things-that-are-functions, and since a function (being a set) can't be its own member, no paradox arises.
+Self-membership is simply **disallowed by axiom** — no set may contain itself. This is stricter than ZFC's regularity axiom (which rules out self-membership as a *derived consequence* of the axiom of foundation) but simpler: Naive just states it directly rather than deriving it from a stratified type theory (à la Russell) or from foundation-axiom machinery. Practically this also means the set of all functions, or any similarly broad category set, is well-defined without re-deriving Russell's Paradox: it's a proper-class-like set of things-that-are-functions, and since a function (being a set) can't be its own member, no paradox arises.
 
 ---
 
 ## 10. Surface Syntax
 
-SeSaML's concrete syntax reads as declarative element construction plus event wiring — closer to a declarative UI DSL than to a general-purpose language, with functional sets layered in for Turing completeness. This is drawn directly from working examples, not just the four stated influences.
+Naive's concrete syntax reads as declarative element construction plus event wiring — closer to a declarative UI DSL than to a general-purpose language, with functional sets layered in for Turing completeness. This is drawn directly from working examples, not just the four stated influences.
 
 ### Basic element declaration and layout
 
@@ -229,7 +229,7 @@ LOAD Products FROM SERVER AT /api/products
     MEMBER OF ProductList
 ```
 
-The server response is itself a SeSaML set declaration; the runtime instantiates the members and assigns membership directly rather than the client writing individual `CREATE` statements for each item. The server side can be written in any HTTP-speaking language.
+The server response is itself a Naive set declaration; the runtime instantiates the members and assigns membership directly rather than the client writing individual `CREATE` statements for each item. The server side can be written in any HTTP-speaking language.
 
 ### Named event-target sets (reference table)
 
@@ -277,13 +277,13 @@ SET NavyBlue.value TO #001F5B
 
 ### Document structure and navigation
 
-A SeSaML document is a plain text file served over HTTP. The runtime fetches and parses it. Navigation between documents uses `HYPERLINKS`. There is no page reload on navigation — the runtime loads the new document's set tree and merges or replaces as specified.
+A Naive document is a plain text file served over HTTP. The runtime fetches and parses it. Navigation between documents uses `HYPERLINKS`. There is no page reload on navigation — the runtime loads the new document's set tree and merges or replaces as specified.
 
 ---
 
 ## 11. Functional Sets and Turing Completeness
 
-SeSaML achieves Turing completeness through **functional sets** — sets that are themselves functions, expressed via the same `CREATE ... AS` grammar used for everything else. Control flow is expressed through set-membership predicates rather than imperative branching/looping constructs bolted on separately.
+Naive achieves Turing completeness through **functional sets** — sets that are themselves functions, expressed via the same `CREATE ... AS` grammar used for everything else. Control flow is expressed through set-membership predicates rather than imperative branching/looping constructs bolted on separately.
 
 **Conditional:**
 ```
@@ -308,9 +308,9 @@ END
 
 ### This is not Russell's Nightmare — ordinary control flow and arithmetic are real, first-class syntax
 
-It's worth being explicit about this, since it's easy to conflate SeSaML with the more austere symbolic thought-experiment language discussed in adjacent sessions. **SeSaML is not that.** Look again at the `Factorial` example above: `N.value <= 1`, `N.value * ...`, `N.value - 1` are ordinary infix comparison and arithmetic expressions, evaluated the normal way — not `∩`/`∪`/`\` set-algebra symbols standing in for arithmetic. `IF ... THEN ... END` is a real conditional keyword construct, not a membership predicate written out in symbolic set notation.
+It's worth being explicit about this, since it's easy to conflate Naive with the more austere symbolic thought-experiment language discussed in adjacent sessions. **Naive is not that.** Look again at the `Factorial` example above: `N.value <= 1`, `N.value * ...`, `N.value - 1` are ordinary infix comparison and arithmetic expressions, evaluated the normal way — not `∩`/`∪`/`\` set-algebra symbols standing in for arithmetic. `IF ... THEN ... END` is a real conditional keyword construct, not a membership predicate written out in symbolic set notation.
 
-The design choice is deliberate: sets are the *data model and the styling/layout/state model*, but they were never meant to replace ordinary expression syntax for something as mundane as `x > 0` or `n - 1`. A 1995 web developer writing SeSaML writes `IF`, does arithmetic with `+`/`-`/`*`/`/`, and calls functions with `CALL ... WITH (...)` — they never have to think in raw set-theoretic notation to do everyday things. The set-theoretic purity lives in *what the language's nouns are* (an element, a style, a position, a function are all sets under the hood), not in *forcing the verbs into set-algebra symbols*. That trade-off is what makes SeSaML plausible as something Netscape could have shipped to ordinary developers, as opposed to the pure esolang, which was never intended to be usable by anyone who isn't already fluent in ZFC notation.
+The design choice is deliberate: sets are the *data model and the styling/layout/state model*, but they were never meant to replace ordinary expression syntax for something as mundane as `x > 0` or `n - 1`. A 1995 web developer writing Naive writes `IF`, does arithmetic with `+`/`-`/`*`/`/`, and calls functions with `CALL ... WITH (...)` — they never have to think in raw set-theoretic notation to do everyday things. The set-theoretic purity lives in *what the language's nouns are* (an element, a style, a position, a function are all sets under the hood), not in *forcing the verbs into set-algebra symbols*. That trade-off is what makes Naive plausible as something Netscape could have shipped to ordinary developers, as opposed to the pure esolang, which was never intended to be usable by anyone who isn't already fluent in ZFC notation.
 
 ### Why functional sets specifically (not bolted-on functions)
 
@@ -358,7 +358,7 @@ ON DROP WHERE TARGET IS NOT NavItem
 
 ## 12. The Runtime, Event Loop, and Async Model
 
-This is the concrete answer to "how does async actually work" — SeSaML has a real, fully specified execution model, not just a philosophical claim that "cycles are the only control flow."
+This is the concrete answer to "how does async actually work" — Naive has a real, fully specified execution model, not just a philosophical claim that "cycles are the only control flow."
 
 ### Parsing produces the live state directly
 
@@ -380,7 +380,7 @@ This is the actual async model, and it's deliberately **not** multithreaded (see
 
 - **`STACK`** is a built-in ordered set representing the execution stack. Function sets are pushed onto it and executed in order; a function set may mutate memberships/properties, push further function sets (this is how recursion works), or return a value to its caller.
 - **`QUEUE`** is a built-in set holding pending asynchronous operations — timers and network requests specifically. When a timer fires or a network response arrives, its associated function set is *moved from `QUEUE` to `STACK`* by the runtime.
-- Both `STACK` and `QUEUE` are directly inspectable and mutable by ordinary SeSaML programs using standard set operations — the runtime doesn't hide its own execution state from the language. This was called out explicitly as a design principle: **introspectability** — "the execution stack and event queue are sets. The program can see and manipulate its own runtime."
+- Both `STACK` and `QUEUE` are directly inspectable and mutable by ordinary Naive programs using standard set operations — the runtime doesn't hide its own execution state from the language. This was called out explicitly as a design principle: **introspectability** — "the execution stack and event queue are sets. The program can see and manipulate its own runtime."
 
 This gives you the same practical effect as JavaScript's task/microtask queues (a pending operation doesn't block the main loop; its continuation runs later when the loop gets to it) but implemented as literal, first-class, inspectable set membership rather than an opaque runtime-internal queue. Network requests specifically are modeled as `GET`/`POST` operations that enqueue onto `QUEUE` and resolve asynchronously — this is what enables polling-based live updates (email refresh, Webcel recalculation triggers) without ever blocking the event loop.
 
@@ -414,10 +414,10 @@ Consistent with "everything is a set," UI elements have no built-in widget behav
 
 ### Honest limitations, argued directly
 
-- **Network-bound demos don't work.** Live-updating email over a poll loop was judged a failure case for the 1995 counterfactual — not because of SeSaML's model, but because push required persistent connections 1995 infrastructure couldn't sustain. SeSaML solves the *runtime* problem, not the *transport* problem. Anything depending on fast server round-trips is blocked by infrastructure the language can't touch.
+- **Network-bound demos don't work.** Live-updating email over a poll loop was judged a failure case for the 1995 counterfactual — not because of Naive's model, but because push required persistent connections 1995 infrastructure couldn't sustain. Naive solves the *runtime* problem, not the *transport* problem. Anything depending on fast server round-trips is blocked by infrastructure the language can't touch.
 - **Webcel is the strongest demo**, precisely because it's entirely client-side once data is loaded: spreadsheet-as-set-membership maps cleanly onto the model, and it needs no network round-trip mid-interaction.
 - **Debuggability is an open wound, not a solved problem.** When something doesn't render or an event doesn't fire, tracing why means querying the full membership state at the moment of failure by hand — there's no dedicated debugger yet, and this was explicitly named as the most pressing missing piece of tooling.
-- **Governance/continuity risk**, raised and only partly answered: SeSaML would have been a single-vendor (Netscape) product, unlike a standards-body language. The stated mitigating argument is that a language with one coherent primitive is far easier to reimplement from spec than one with years of accumulated specification — simplicity as a survival property, not a guarantee of survival.
+- **Governance/continuity risk**, raised and only partly answered: Naive would have been a single-vendor (Netscape) product, unlike a standards-body language. The stated mitigating argument is that a language with one coherent primitive is far easier to reimplement from spec than one with years of accumulated specification — simplicity as a survival property, not a guarantee of survival.
 - **Search-engine indexability** was raised as a real open problem: HTML's tag structure is directly parseable by a 1995-era crawler; a set-membership structure would need a crawler that understands set membership, which none did. The honest answer given was that the document *does* have structure (it's set membership) but current tooling doesn't understand that structure, and that gap was left unresolved rather than argued away.
 
 ---
@@ -458,4 +458,4 @@ Rough build-hour estimate for the full runtime + Webcel, excluding the pre-writt
 
 ---
 
-*This document consolidates design decisions made across multiple conversations. It reflects the applied SetScript/SeSaML layer specifically — the pure, unconstrained set-theoretic language (STL) and the separate Russell's Nightmare bytecode VM (which has its own, more elaborate symbolic notation and a distinct three-way complement split) are related but distinct projects and are deliberately excluded here.*
+*This document consolidates design decisions made across multiple conversations. It reflects the applied SetScript/Naive layer specifically — the pure, unconstrained set-theoretic language (STL) and the separate Russell's Nightmare bytecode VM (which has its own, more elaborate symbolic notation and a distinct three-way complement split) are related but distinct projects and are deliberately excluded here.*

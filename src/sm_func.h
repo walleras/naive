@@ -8,7 +8,7 @@
  * `ON CLICK CALL f WITH (...)` and `CREATE f AS FUNCTION, OnClick, Widget`
  * reach it.
  *
- * Body syntax follows Lua where SeSaML has no verb of its own:
+ * Body syntax follows Lua where Naive has no verb of its own:
  *     TAKES a, b                       parameters (sets, passed by reference)
  *     IF cond THEN .. ELSEIF cond THEN .. ELSE .. END
  *     WHILE cond DO .. END
@@ -16,7 +16,7 @@
  *     x = expr                         assignment (same as SET x TO expr)
  *     RETURN [expr]
  *     f(a, b)  /  CALL f WITH (a, b)   call
- * plus the SeSaML verbs ADD / REMOVE / SET / SWAP / MOVE / SEND. Operators
+ * plus the Naive verbs ADD / REMOVE / SET / SWAP / MOVE / SEND. Operators
  * are the expression language of sm_expr.h (and/or/not, = == <> ~= !=, IS).
  * A number or string argument is wrapped in a fresh anonymous set; a set name
  * is passed as that very set.

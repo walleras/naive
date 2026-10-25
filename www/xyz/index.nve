@@ -1,4 +1,4 @@
--- www/xyz/index.sml -- served for the virtual domain "xyz.com"
+-- www/xyz/index.nve -- served for the virtual domain "xyz.com"
 
 CREATE Title AS H1
     WITH text = "Welcome to xyz.com"
@@ -17,5 +17,5 @@ CREATE ToMyThoughts AS TextBox
 	AT X.Center, Y.210
 
 CREATE HomeLink AS TextBox
-    WITH text = "<- back to the SeSaML site", link = "/"
+    WITH text = "<- back to the Naive site", link = "/"
     AT X.Center, Y.170

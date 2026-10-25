@@ -1,4 +1,4 @@
--- spreadsheet.sml -- a spreadsheet written entirely in SML.
+-- spreadsheet.nve -- a spreadsheet written entirely in Naive.
 --
 -- There is nothing spreadsheet-specific in the engine. This page is made of:
 --   * ordinary widgets: TextInput cells you can edit, TextBox cells that hold
@@ -19,7 +19,7 @@
 -- are formulas too: click one to read it in the formula bar.
 
 CREATE Title AS TextBox
-    WITH text = "SeSaML Sheet"
+    WITH text = "Naive Sheet"
     AT X.16, Y.6
     MEMBER OF BOLD
 

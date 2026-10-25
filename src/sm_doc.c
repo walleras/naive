@@ -1,4 +1,4 @@
-/* sm_doc.c  --  SeSaML document runtime implementation. */
+/* sm_doc.c  --  Naive document runtime implementation. */
 #include "sm_doc.h"
 #include "sm_server.h"
 
@@ -689,7 +689,7 @@ SmStatus sm_doc_post(SmDoc *d, const char *route, const char *body)
     return st;
 }
 
-/* Open a local .sml file directly (drag-and-drop, or an OPEN action), as a new
+/* Open a local .nve file directly (drag-and-drop, or an OPEN action), as a new
  * history entry -- so Back returns to whatever page was showing before. */
 SmStatus sm_doc_open_file(SmDoc *d, const char *path)
 {

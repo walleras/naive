@@ -1,10 +1,10 @@
-/* sml_main.c  --  the SeSaML page viewer entry point.
+/* naive_main.c  --  the Naive page viewer entry point.
  *
  * Usage:
- *   sesaml               -> navigate the mock server route "/"
- *   sesaml /docs         -> navigate a route (arg begins with '/')
- *   sesaml page.sml      -> load a local file directly
- * The server root can be overridden with the SESAML_WWW environment variable
+ *   naive               -> navigate the mock server route "/"
+ *   naive /docs         -> navigate a route (arg begins with '/')
+ *   naive page.nve      -> load a local file directly
+ * The server root can be overridden with the NAIVE_WWW environment variable
  * (default "www"). Pure C99: only wires sm_doc to the backend via SmApp.
  */
 #include "sm_doc.h"
@@ -14,24 +14,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Does "<dir>/index.sml" exist and is it readable? */
+/* Does "<dir>/index.nve" exist and is it readable? */
 static SmBool has_index(const char *dir)
 {
     char path[300];
     FILE *f;
-    snprintf(path, sizeof(path), "%.250s/index.sml", dir);
+    snprintf(path, sizeof(path), "%.250s/index.nve", dir);
     f = fopen(path, "rb");
     if (f == NULL) { return SM_FALSE; }
     fclose(f);
     return SM_TRUE;
 }
 
-/* Auto-detect the server root so "sesaml" with no args works whether it is
+/* Auto-detect the server root so "naive" with no args works whether it is
  * launched from the project root (CWD = project root, "www" resolves), or by
- * double-clicking build/sesaml.exe (CWD = build/, so "www" would incorrectly
+ * double-clicking build/naive.exe (CWD = build/, so "www" would incorrectly
  * mean build/www -- the real content lives one directory up, as a sibling of
  * build/). Tries, in order: the plain relative "www", "<exe_dir>/www", and
- * "<exe_dir>/../www"; sets the first one whose index.sml is readable. Leaves
+ * "<exe_dir>/../www"; sets the first one whose index.nve is readable. Leaves
  * the default ("www") in place if nothing better is found, so behavior is
  * unchanged for anyone who already had a working setup. */
 static void autodetect_root(const char *argv0)
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     SmApp app;
     char err[192];
     const char *arg = (argc > 1) ? argv[1] : NULL;
-    const char *root = getenv("SESAML_WWW");
+    const char *root = getenv("NAIVE_WWW");
     int rc;
 
     if (root != NULL) { sm_server_set_root(root); }
@@ -87,13 +87,13 @@ int main(int argc, char **argv)
     } else if (arg[0] == '/') {
         sm_doc_navigate(d, arg);                 /* a route */
     } else if (sm_doc_load_file(d, arg, err, sizeof(err)) != SM_OK) {
-        fprintf(stderr, "SeSaML: could not load '%s': %s\n", arg, err);
+        fprintf(stderr, "Naive: could not load '%s': %s\n", arg, err);
         sm_doc_free(d);
         return 2;
     }
 
     sm_doc_fill_app(d, &app);
-    rc = sm_backend_run("SeSaML", 720, 540, &app);
+    rc = sm_backend_run("Naive", 720, 540, &app);
     sm_doc_free(d);
     return rc;
 }

@@ -1,7 +1,7 @@
--- hello.sml -- a SeSaML page. Everything on it is a set; membership is state.
+-- hello.nve -- a Naive page. Everything on it is a set; membership is state.
 
 CREATE Title AS TextBox
-    WITH text = "Welcome to SeSaML"
+    WITH text = "Welcome to Naive"
     AT X.Center, Y.Top
 
 CREATE Greeting AS TextBox

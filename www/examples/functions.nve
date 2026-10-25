@@ -1,6 +1,6 @@
--- functions.sml -- user-defined FUNCTION sets. Bodies use Lua-style control
+-- functions.nve -- user-defined FUNCTION sets. Bodies use Lua-style control
 -- flow (IF/ELSEIF/ELSE/END, WHILE..DO..END, LOCAL, RETURN, ==, ~=, and/or/not)
--- with the SeSaML verbs ADD / REMOVE / SET / MOVE inside.
+-- with the Naive verbs ADD / REMOVE / SET / MOVE inside.
 
 CREATE Title AS H2
     WITH text = "Functions"

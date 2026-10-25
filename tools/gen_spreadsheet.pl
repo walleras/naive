@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Generates examples/spreadsheet.sml. The sheet is plain SML: cells are widgets,
+# Generates examples/spreadsheet.nve. The sheet is plain Naive: cells are widgets,
 # ranges are SETS (Row2, ColB, All), formulas are ordinary "=..." content, and
 # the selection UI (name box, formula bar, header highlight) is driven by the
 # built-in FOCUS set. Layout uses the generic width / height / align / bgcolor
@@ -54,7 +54,7 @@ push @boxcells, "E$_" for (@datarows, @scratch);
 for my $s (@sumrows) { push @boxcells, "$_$s->[0]" for (@cols, 'E'); }
 
 out <<'H';
--- spreadsheet.sml -- a spreadsheet written entirely in SML.
+-- spreadsheet.nve -- a spreadsheet written entirely in Naive.
 --
 -- There is nothing spreadsheet-specific in the engine. This page is made of:
 --   * ordinary widgets: TextInput cells you can edit, TextBox cells that hold
@@ -80,7 +80,7 @@ H
 my $bar_w = $GRID_W - 114;
 out <<"H";
 CREATE Title AS TextBox
-    WITH text = "SeSaML Sheet"
+    WITH text = "Naive Sheet"
     AT X.$X0, Y.6
     MEMBER OF BOLD
 

@@ -1,4 +1,4 @@
-# SeSaML — Grammar Sketch (v0.1, extrapolated)
+# Naive — Grammar Sketch (v0.1, extrapolated)
 
 **Read this before the grammar itself.** Nothing in prior sessions ever assembled a formal grammar — every construct that exists is a worked example. This document reverse-engineers a consistent EBNF from those examples. Every rule is tagged:
 
@@ -134,7 +134,7 @@ send_stmt    ::= 'SEND' ID 'TO' path                -- [ATTESTED] SEND InputFiel
 path         ::= ID { '/' ID }
 ```
 
-**Gap flagged:** the CantorDB-derived SeQL sibling language has a full CRUD surface (`DELETE SET`, `RENAME SET`, `UPDATE PROPERTY ... OF ... TO`) — but no example ever shows SeSaML itself using `DELETE` or `RENAME` directly (deletion in SeSaML is implicit, via membership-based GC — §8 of the design doc). Whether SeSaML exposes an explicit delete/rename verb at all, or relies entirely on "lose your last parent and get GC'd," was never addressed. This grammar omits `delete_stmt`/`update_stmt` production bodies for that reason — they're placeholders, not real rules.
+**Gap flagged:** the CantorDB-derived SeQL sibling language has a full CRUD surface (`DELETE SET`, `RENAME SET`, `UPDATE PROPERTY ... OF ... TO`) — but no example ever shows Naive itself using `DELETE` or `RENAME` directly (deletion in Naive is implicit, via membership-based GC — §8 of the design doc). Whether Naive exposes an explicit delete/rename verb at all, or relies entirely on "lose your last parent and get GC'd," was never addressed. This grammar omits `delete_stmt`/`update_stmt` production bodies for that reason — they're placeholders, not real rules.
 
 ---
 
@@ -146,7 +146,7 @@ load_stmt ::= 'LOAD' ID 'FROM' 'SERVER' 'AT' path
               [ member_clause ]
 ```
 
-**Gap flagged:** only `LOAD ... FROM SERVER` (an implicit GET) and `SEND ... TO ...` (an implicit POST-ish send) are attested. Neither shows explicit `GET`/`POST` as verbs in the surface syntax, even though the design doc's Implementation Notes reference "`GET` and `POST` as built-in network sets" — that's describing the *runtime's* internal treatment (via `QUEUE`), not necessarily user-facing keywords. Whether a SeSaML author ever writes the literal word `GET` or `POST` themselves, or always goes through `LOAD`/`SEND`, is unresolved. Response error-handling syntax (what happens on a failed `LOAD`) is entirely unspecified — no `ON ERROR` or equivalent appears anywhere.
+**Gap flagged:** only `LOAD ... FROM SERVER` (an implicit GET) and `SEND ... TO ...` (an implicit POST-ish send) are attested. Neither shows explicit `GET`/`POST` as verbs in the surface syntax, even though the design doc's Implementation Notes reference "`GET` and `POST` as built-in network sets" — that's describing the *runtime's* internal treatment (via `QUEUE`), not necessarily user-facing keywords. Whether a Naive author ever writes the literal word `GET` or `POST` themselves, or always goes through `LOAD`/`SEND`, is unresolved. Response error-handling syntax (what happens on a failed `LOAD`) is entirely unspecified — no `ON ERROR` or equivalent appears anywhere.
 
 ---
 

@@ -1,7 +1,7 @@
--- www/index.sml -- served for route "/"
+-- www/index.nve -- served for route "/"
 
 CREATE Title AS TextBox
-    WITH text = "SeSaML Home"
+    WITH text = "Naive Home"
     AT X.Center, Y.Top
 
 CREATE Intro AS TextBox
@@ -9,7 +9,7 @@ CREATE Intro AS TextBox
     AT X.Center, Y.120
 
 CREATE ToDemo AS TextBox
-    WITH text = "Fancy demo: the SeSaML playground", link = "/examples/demo.sml"
+    WITH text = "Fancy demo: the Naive playground", link = "/examples/demo.nve"
     AT X.Center, Y.170
 
 CREATE ToExamples AS TextBox
@@ -17,7 +17,7 @@ CREATE ToExamples AS TextBox
     AT X.Center, Y.210
 
 CREATE ToDocs AS TextBox
-    WITH text = "Read the docs", link = "/docs.sml"
+    WITH text = "Read the docs", link = "/docs.nve"
     AT X.Center, Y.250
 
 CREATE ToAbout AS TextBox

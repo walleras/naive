@@ -1,7 +1,7 @@
-/* sm_lex.h  --  SeSaML tokenizer.  Grammar sketch S1.
+/* sm_lex.h  --  Naive tokenizer.  Grammar sketch S1.
  *
  * Streaming lexer with one token of lookahead (lx->cur). Lexemes point into
- * the source buffer -- SeSaML string literals have no escape sequences, so a
+ * the source buffer -- Naive string literals have no escape sequences, so a
  * token is always a verbatim slice of source and needs no allocation. The
  * caller must keep the source alive for as long as any token is in use.
  *

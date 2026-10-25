@@ -1,4 +1,4 @@
-/* sm_win32.c  --  Win32 GDI backend for the SeSaML render interface.
+/* sm_win32.c  --  Win32 GDI backend for the Naive render interface.
  *
  * This is the ONE module permitted to depend on the platform. It is C99 in
  * dialect but compiled with relaxed pedantry because <windows.h> is not
@@ -308,7 +308,7 @@ int sm_backend_run(const char *title, int width, int height, SmApp *app)
     wc.hInstance = inst;
     wc.hCursor = LoadCursorA(NULL, IDC_ARROW);
     wc.hbrBackground = NULL; /* we paint everything */
-    wc.lpszClassName = "SeSaMLWebcel";
+    wc.lpszClassName = "NaiveWebcel";
     if (!RegisterClassA(&wc)) {
         return 1;
     }
@@ -323,7 +323,7 @@ int sm_backend_run(const char *title, int width, int height, SmApp *app)
     if (hwnd == NULL) {
         return 1;
     }
-    DragAcceptFiles(hwnd, TRUE); /* let Explorer drag-drop a .sml file in */
+    DragAcceptFiles(hwnd, TRUE); /* let Explorer drag-drop a .nve file in */
 
     ShowWindow(hwnd, SW_SHOWNORMAL);
     UpdateWindow(hwnd);

@@ -1,4 +1,4 @@
-/* sm_common.h  --  SeSaML runtime: shared primitives.
+/* sm_common.h  --  Naive runtime: shared primitives.
  *
  * The engine is written in portable ISO C99 and must compile clean under
  *   gcc -std=c99 -pedantic-errors -Wall -Wextra -Werror

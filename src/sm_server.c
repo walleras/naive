@@ -1,4 +1,4 @@
-/* sm_server.c  --  mock SeSaML route server. */
+/* sm_server.c  --  mock Naive route server. */
 #include "sm_server.h"
 
 #include <stdio.h>
@@ -51,8 +51,8 @@ static SmBool has_dotdot(const char *s)
 /* A "virtual internet": any address that doesn't start with '/' is read as a
  * domain, e.g. "xyz.com" or "xyz.com/about". The folder is the domain with its
  * TLD stripped at the first '.' ("xyz.com" -> "xyz"), served from
- * "<root>/<folder>/"; the bare domain serves "index.sml", "xyz.com/about"
- * serves "about.sml". Builds "<root>/<folder>/<page>.sml" into `path` (size
+ * "<root>/<folder>/"; the bare domain serves "index.nve", "xyz.com/about"
+ * serves "about.nve". Builds "<root>/<folder>/<page>.nve" into `path` (size
  * `pathcap`); returns SM_FALSE (path left empty) if the address is malformed. */
 static SmBool resolve_domain_path(const char *addr, char *path, size_t pathcap)
 {
@@ -62,7 +62,7 @@ static SmBool resolve_domain_path(const char *addr, char *path, size_t pathcap)
     const char *rest;
 
     path[0] = '\0';
-    if (pathcap < 408) { return SM_FALSE; } /* room for root+folder+page+".sml"+NUL */
+    if (pathcap < 408) { return SM_FALSE; } /* room for root+folder+page+".nve"+NUL */
     if (addr[0] == '\0' || has_dotdot(addr)) { return SM_FALSE; }
 
     while (addr[domain_end] != '\0' && addr[domain_end] != '/') { ++domain_end; }
@@ -87,7 +87,7 @@ static SmBool resolve_domain_path(const char *addr, char *path, size_t pathcap)
         page[n] = '\0';
     }
 
-    snprintf(path, pathcap, "%.200s/%.100s/%.100s.sml", g_root, folder, page);
+    snprintf(path, pathcap, "%.200s/%.100s/%.100s.nve", g_root, folder, page);
     return SM_TRUE;
 }
 
@@ -111,20 +111,20 @@ SmStatus sm_server_get(const char *route, char **out_body, char *err, size_t err
     }
 
     if (bare[0] == '/') {
-        /* No route table: "/a/b" and "/a/b.sml" both serve "<root>/a/b.sml",
-         * and "/" serves "<root>/index.sml". */
+        /* No route table: "/a/b" and "/a/b.nve" both serve "<root>/a/b.nve",
+         * and "/" serves "<root>/index.nve". */
         size_t len = strlen(bare);
         if (len > 1 && bare[len - 1] == '/') { bare[--len] = 0; }
-        if (len > 4 && strcmp(bare + len - 4, ".sml") == 0) { bare[len - 4] = 0; }
+        if (len > 4 && strcmp(bare + len - 4, ".nve") == 0) { bare[len - 4] = 0; }
         if (has_dotdot(bare) || strlen(bare) > 200) {
             if (err != NULL && errcap > 0) { snprintf(err, errcap, "404 Not Found: %.100s", route); }
             return SM_ERR_NOT_FOUND;
         }
         if (strcmp(bare, "/") == 0) { strcpy(bare, "/index"); }
-        snprintf(path, sizeof(path), "%.240s%s.sml", g_root, bare);
+        snprintf(path, sizeof(path), "%.240s%s.nve", g_root, bare);
     } else {
         /* Not a leading-slash route: read it as a domain in the virtual
-         * internet ("xyz.com" -> www/xyz/index.sml, etc). */
+         * internet ("xyz.com" -> www/xyz/index.nve, etc). */
         if (!resolve_domain_path(bare, path, sizeof(path))) {
             if (err != NULL && errcap > 0) { snprintf(err, errcap, "404 Not Found: %.100s", route); }
             return SM_ERR_NOT_FOUND;
@@ -140,7 +140,7 @@ SmStatus sm_server_get(const char *route, char **out_body, char *err, size_t err
     return SM_OK;
 }
 
-/* Build a SeSaML page that echoes the fields of an urlencoded POST body -- the
+/* Build a Naive page that echoes the fields of an urlencoded POST body -- the
  * dynamic response a 1995 CGI script would return. */
 static char *build_echo_page(const char *body)
 {

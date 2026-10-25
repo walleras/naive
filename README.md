@@ -1,23 +1,23 @@
-# SeSaML
+# Naive
 
 **Everything is a set. Membership is the only state.**
 
-SeSaML is a small document language and viewer built on one idea: a web page is
+Naive is a small document language and viewer built on one idea: a web page is
 a collection of sets. A button is a set. A colour is a set. A tab is a set of
 widgets. Showing something is `ADD x TO VISIBLE`; painting it red is
 `ADD x TO RED`; ticking a box is a membership change. There is no DOM, no CSS
 and no JavaScript, only sets and the verbs that move things between them.
 
 The viewer is a native Windows program written in portable C99, with a mock
-"internet" (a folder of `.sml` pages you browse by route or by `domain.com`).
+"internet" (a folder of `.nve` pages you browse by route or by `domain.com`).
 
-| A spreadsheet, written entirely in SML | A playground: tabs, counter, colours, maths |
+| A spreadsheet, written entirely in Naive | A playground: tabs, counter, colours, maths |
 |---|---|
 | ![spreadsheet](docs/images/spreadsheet.png) | ![playground](docs/images/playground.png) |
 
 ## A taste
 
-```sml
+```nve
 CREATE Greeting AS TextBox
     WITH text = "Hello, World -- there is no DOM here, only sets."
     AT X.Center, Y.Center
@@ -51,9 +51,9 @@ CREATE Plus AS Button
 Windows with MinGW (`gcc`) and a POSIX `sh` (Git Bash works):
 
 ```sh
-sh build/build.sh sml                    # builds build/sesaml.exe
-build/sesaml.exe examples/demo.sml       # open a page directly
-build/sesaml.exe                         # or start at the mock site's home (www/)
+sh build/build.sh viewer                    # builds build/naive.exe
+build/naive.exe examples/demo.nve       # open a page directly
+build/naive.exe                         # or start at the mock site's home (www/)
 ```
 
 On any other OS you can still check that the portable core compiles clean:
@@ -73,13 +73,13 @@ Open them from the home page (`/examples`) or directly from `examples/`:
 
 | File | What it shows |
 |---|---|
-| `demo.sml` | The playground: tabs, a counter, colour and style sets, recursive and iterative maths |
-| `spreadsheet.sml` | A spreadsheet in SML: ranges as sets, live formulas, name box, formula bar, selection |
-| `functions.sml` | User-defined `FUNCTION` sets and event bindings |
-| `showcase.sml` | Every HTML-parity element: headings, lists, tables, forms, images, links |
-| `form.sml` | Form inputs gathered as a set and submitted |
-| `grid_demo.sml` | `DEFINE GRID`: a virtual coordinate system that scales with the window |
-| `hello.sml` | The smallest page |
+| `demo.nve` | The playground: tabs, a counter, colour and style sets, recursive and iterative maths |
+| `spreadsheet.nve` | A spreadsheet in Naive: ranges as sets, live formulas, name box, formula bar, selection |
+| `functions.nve` | User-defined `FUNCTION` sets and event bindings |
+| `showcase.nve` | Every HTML-parity element: headings, lists, tables, forms, images, links |
+| `form.nve` | Form inputs gathered as a set and submitted |
+| `grid_demo.nve` | `DEFINE GRID`: a virtual coordinate system that scales with the window |
+| `hello.nve` | The smallest page |
 
 ## The language in a minute
 
@@ -106,23 +106,23 @@ Open them from the home page (`/examples`) or directly from `examples/`:
   window-scaling virtual canvas.
 
 The full thinking, including the parts not built yet, is in
-[`sesaml_design_doc.md`](sesaml_design_doc.md) and
-[`sesaml_grammar_sketch.md`](sesaml_grammar_sketch.md).
+[`naive_design_doc.md`](naive_design_doc.md) and
+[`naive_grammar_sketch.md`](naive_grammar_sketch.md).
 
 ## Repository layout
 
 ```
 src/        the engine, parser, interpreter, mock server and Win32 backend
 examples/   standalone example pages
-www/        the mock internet the viewer browses (index.sml, docs, xyz.com/, ...)
+www/        the mock internet the viewer browses (index.nve, docs, xyz.com/, ...)
 build/      build.sh
-tools/      gen_spreadsheet.pl: generates examples/spreadsheet.sml
+tools/      gen_spreadsheet.pl: generates examples/spreadsheet.nve
 docs/       images used by this README
 ```
 
 ## Status and limits
 
-SeSaML is an experiment, not a product. Network transport is mocked, there is one
+Naive is an experiment, not a product. Network transport is mocked, there is one
 (Windows) backend, `SEND` is recorded but does nothing, and formulas see only
 numbers, strings and sets. The language is deliberately small.
 

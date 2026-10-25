@@ -1,4 +1,4 @@
--- www/submitted.sml -- served for route "/submit" after a form submit
+-- www/submitted.nve -- served for route "/submit" after a form submit
 
 CREATE Home AS TextBox
     WITH text = "<- Home", link = "/"

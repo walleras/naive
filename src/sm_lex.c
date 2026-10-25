@@ -1,4 +1,4 @@
-/* sm_lex.c  --  SeSaML tokenizer implementation. */
+/* sm_lex.c  --  Naive tokenizer implementation. */
 #include "sm_lex.h"
 
 #include <string.h>

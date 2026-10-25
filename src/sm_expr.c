@@ -1,4 +1,4 @@
-/* sm_expr.c  --  SeSaML expression parser + evaluator. */
+/* sm_expr.c  --  Naive expression parser + evaluator. */
 #include "sm_expr.h"
 #include "sm_lex.h"
 

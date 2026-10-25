@@ -14,8 +14,8 @@
 struct SmSet; /* forward: a value can reference a set without a hard dep */
 
 typedef enum {
-    SM_VAL_NONE = 0,   /* absent -- SeSaML has no null; this means "unset"   */
-    SM_VAL_NUMBER,     /* IEEE double; SeSaML integers are exact within it   */
+    SM_VAL_NONE = 0,   /* absent -- Naive has no null; this means "unset"   */
+    SM_VAL_NUMBER,     /* IEEE double; Naive integers are exact within it   */
     SM_VAL_STRING,     /* owned, NUL-terminated                              */
     SM_VAL_COLOR,      /* 0x00RRGGBB                                         */
     SM_VAL_SET         /* borrowed reference to another set (not owned)      */
