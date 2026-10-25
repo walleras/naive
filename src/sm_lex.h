@@ -1,4 +1,4 @@
-/* sm_lex.h  --  SeSaML tokenizer (strict ISO C89).  Grammar sketch S1.
+/* sm_lex.h  --  SeSaML tokenizer.  Grammar sketch S1.
  *
  * Streaming lexer with one token of lookahead (lx->cur). Lexemes point into
  * the source buffer -- SeSaML string literals have no escape sequences, so a

@@ -1,11 +1,11 @@
-/* sml_main.c  --  the SeSaML page viewer entry point (strict ISO C89).
+/* sml_main.c  --  the SeSaML page viewer entry point.
  *
  * Usage:
  *   sesaml               -> navigate the mock server route "/"
  *   sesaml /docs         -> navigate a route (arg begins with '/')
  *   sesaml page.sml      -> load a local file directly
  * The server root can be overridden with the SESAML_WWW environment variable
- * (default "www"). Pure C89: only wires sm_doc to the backend via SmApp.
+ * (default "www"). Pure C99: only wires sm_doc to the backend via SmApp.
  */
 #include "sm_doc.h"
 #include "sm_server.h"
@@ -19,7 +19,7 @@ static SmBool has_index(const char *dir)
 {
     char path[300];
     FILE *f;
-    sprintf(path, "%.250s/index.sml", dir);
+    snprintf(path, sizeof(path), "%.250s/index.sml", dir);
     f = fopen(path, "rb");
     if (f == NULL) { return SM_FALSE; }
     fclose(f);
@@ -58,10 +58,10 @@ static void autodetect_root(const char *argv0)
     }
     if (exe_dir[0] == '\0') { return; } /* argv0 had no path component */
 
-    sprintf(cand, "%.250s/www", exe_dir);
+    snprintf(cand, sizeof(cand), "%.250s/www", exe_dir);
     if (has_index(cand)) { sm_server_set_root(cand); return; }
 
-    sprintf(cand, "%.240s/../www", exe_dir);
+    snprintf(cand, sizeof(cand), "%.240s/../www", exe_dir);
     if (has_index(cand)) { sm_server_set_root(cand); return; }
 }
 

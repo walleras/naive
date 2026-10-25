@@ -1,5 +1,5 @@
 /* sm_schema.h  --  forced-schema sets: validation via intersection contracts
- *                  (strict ISO C89).  Design doc S6, grammar sketch S9.
+ *  Design doc S6, grammar sketch S9.
  *
  *   CREATE Clickable AS SET
  *       REQUIRES MEMBER HAS FUNCTION

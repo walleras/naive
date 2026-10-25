@@ -1,4 +1,4 @@
-/* sm_set.c  --  set engine implementation (strict ISO C89). */
+/* sm_set.c  --  set engine implementation. */
 #include "sm_set.h"
 #include "sm_schema.h"
 

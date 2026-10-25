@@ -1,12 +1,16 @@
 #!/bin/sh
-# build.sh -- drive the SeSaML build without make (none installed).
+# build.sh -- drive the SeSaML build without make.
 #
-# Two conformance tiers, per the project's locked decision:
-#   CORE  : strict ISO C89, -pedantic-errors -- the "it really is 1990 C" claim.
-#   WIN32 : same C89 dialect but relaxed pedantry, because <windows.h> is not
-#           itself strict-C89-clean. Confined to sm_win32*.c only.
+#   sh build/build.sh sml      build the viewer (build/sesaml.exe)  [Windows + MinGW]
+#   sh build/build.sh check    compile the portable core only; works on any OS
+#   sh build/build.sh test     build and run tests/test_*.c, if a tests/ folder exists
+#   sh build/build.sh clean    remove build products
 #
-# Usage:  sh build/build.sh [test|sml|clean]
+# Two tiers:
+#   CORE  : the engine, parser, interpreter and mock server -- portable ISO C99,
+#           compiled with -pedantic-errors -Wall -Wextra -Werror.
+#   WIN32 : sm_win32.c, the GDI backend, is the one module that includes
+#           <windows.h>, so it gets relaxed pedantry (-std=gnu99).
 set -e
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
@@ -15,29 +19,40 @@ TST="$ROOT/tests"
 OUT="$ROOT/build"
 CC=${CC:-gcc}
 
-CORE_FLAGS="-std=c89 -pedantic-errors -Wall -Wextra -Werror -I$SRC"
+CORE_FLAGS="-std=c99 -pedantic-errors -Wall -Wextra -Werror -I$SRC"
 
 CORE_SRCS="$SRC/sm_common.c $SRC/sm_value.c $SRC/sm_schema.c $SRC/sm_set.c \
-$SRC/sm_lex.c $SRC/sm_expr.c $SRC/sm_func.c"
+$SRC/sm_lex.c $SRC/sm_expr.c $SRC/sm_func.c $SRC/sm_doc.c $SRC/sm_parse.c \
+$SRC/sm_server.c"
 
-target=${1:-test}
+target=${1:-sml}
 
 case "$target" in
   clean)
-    rm -f "$OUT"/*.o "$OUT"/test_engine "$OUT"/test_engine.exe
+    rm -f "$OUT"/*.o "$OUT"/*.exe
     echo "cleaned"
     ;;
+  check)
+    echo "== compiling core (ISO C99, -pedantic-errors -Werror) =="
+    for f in $CORE_SRCS "$SRC/sml_main.c"; do
+      $CC $CORE_FLAGS -c "$f" -o "${TMPDIR:-${TEMP:-/tmp}}/sm_check_$$.o"
+    done
+    rm -f "${TMPDIR:-${TEMP:-/tmp}}/sm_check_$$.o"
+    echo "core compiles clean"
+    ;;
   test)
-    # The strict-C89 *compile* is the conformance proof and runs fine here.
-    # Some volumes (e.g. the N: drive this project lives on) block *executing*
-    # binaries, so emit test exes to the system temp dir and run them there.
+    if ! ls "$TST"/test_*.c >/dev/null 2>&1; then
+      echo "no tests found in $TST (the tests/ folder is not part of the repository)"
+      exit 0
+    fi
+    # Emit test exes to the system temp dir (some volumes block running binaries
+    # that were built in place) and run them from there.
     RUNDIR=${TEMP:-${TMPDIR:-/tmp}}
     rc=0
     for t in "$TST"/test_*.c; do
       name=$(basename "$t" .c)
-      echo "== compiling core (strict C89) + $name =="
-      $CC $CORE_FLAGS $CORE_SRCS "$SRC/sm_doc.c" \
-          "$SRC/sm_parse.c" "$SRC/sm_server.c" "$t" -o "$RUNDIR/sm_$name.exe"
+      echo "== compiling core (ISO C99) + $name =="
+      $CC $CORE_FLAGS $CORE_SRCS "$t" -o "$RUNDIR/sm_$name.exe"
       echo "== running $name (from $RUNDIR) =="
       "$RUNDIR/sm_$name.exe" "$ROOT" || rc=1
       echo
@@ -45,24 +60,23 @@ case "$target" in
     exit $rc
     ;;
   sml)
-    # The .sml page viewer. Strict ISO C89 for engine + parser + viewer; only
-    # the Win32 backend uses the relaxed gnu89 dialect.
-    echo "== compiling engine + parser + viewer (strict C89) =="
-    STRICT_SRCS="$CORE_SRCS $SRC/sm_doc.c $SRC/sm_parse.c $SRC/sm_server.c $SRC/sml_main.c"
+    # The .sml page viewer: portable C99 for engine + parser + viewer; only the
+    # Win32 backend uses the relaxed gnu99 dialect.
+    echo "== compiling engine + parser + viewer (ISO C99) =="
     OBJ=""
-    for f in $STRICT_SRCS; do
+    for f in $CORE_SRCS "$SRC/sml_main.c"; do
       o="$OUT/$(basename "$f" .c).o"
       $CC $CORE_FLAGS -c "$f" -o "$o"
       OBJ="$OBJ $o"
     done
-    echo "== compiling Win32 backend (gnu89, relaxed) =="
-    $CC -std=gnu89 -Wall -I"$SRC" -c "$SRC/sm_win32.c" -o "$OUT/sm_win32.o"
+    echo "== compiling Win32 backend (gnu99, relaxed) =="
+    $CC -std=gnu99 -Wall -I"$SRC" -c "$SRC/sm_win32.c" -o "$OUT/sm_win32.o"
     echo "== linking =="
     $CC $OBJ "$OUT/sm_win32.o" -o "$OUT/sesaml.exe" -mwindows -lgdi32 -luser32 -lshell32
-    echo "built $OUT/sesaml.exe  (run: sesaml examples/hello.sml)"
+    echo "built $OUT/sesaml.exe  (run: build/sesaml.exe examples/hello.sml)"
     ;;
   *)
-    echo "usage: sh build/build.sh [test|sml|clean]" >&2
+    echo "usage: sh build/build.sh [sml|check|test|clean]" >&2
     exit 2
     ;;
 esac

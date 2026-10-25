@@ -1,4 +1,4 @@
-/* sm_expr.c  --  SeSaML expression parser + evaluator (strict ISO C89). */
+/* sm_expr.c  --  SeSaML expression parser + evaluator. */
 #include "sm_expr.h"
 #include "sm_lex.h"
 

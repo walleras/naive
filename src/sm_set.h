@@ -1,4 +1,4 @@
-/* sm_set.h  --  the one primitive: sets and membership (strict ISO C89).
+/* sm_set.h  --  the one primitive: sets and membership.
  *
  * "Everything is a set. Membership is the only state. Migration (moving an
  *  element into or out of a set) is the only mutation." (design doc S2)

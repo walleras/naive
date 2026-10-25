@@ -1,4 +1,4 @@
-/* sm_common.c  --  shared primitives implementation (strict ISO C89). */
+/* sm_common.c  --  shared primitives implementation. */
 #include "sm_common.h"
 
 #include <stdlib.h>

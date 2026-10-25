@@ -1,4 +1,4 @@
-/* sm_func.c  --  FUNCTION map + statement interpreter (strict ISO C89). */
+/* sm_func.c  --  FUNCTION map + statement interpreter. */
 #include "sm_func.h"
 
 #include <string.h>

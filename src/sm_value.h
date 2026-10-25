@@ -1,4 +1,4 @@
-/* sm_value.h  --  scalar payloads carried by sets (strict ISO C89).
+/* sm_value.h  --  scalar payloads carried by sets.
  *
  * In the pure model every scalar is really an ordered set (design doc S4),
  * but a shippable runtime keeps numbers/strings/colours as concrete values

@@ -1,9 +1,9 @@
 /* sm_win32.c  --  Win32 GDI backend for the SeSaML render interface.
  *
- * This is the ONE module permitted to depend on the platform. It is C89 in
+ * This is the ONE module permitted to depend on the platform. It is C99 in
  * dialect but compiled with relaxed pedantry because <windows.h> is not
- * strict-ISO-C89-clean. Everything it talks to above the OS line (SmCanvas,
- * SmApp) is defined in the strict-C89 sm_render.h.
+ * strict-ISO-C-clean. Everything it talks to above the OS line (SmCanvas,
+ * SmApp) is defined in the portable sm_render.h.
  *
  * In the 1995 counterfactual this stands in for the hand-rolled GDI wrapper a
  * competent C programmer of the era would already have had (design doc S13).

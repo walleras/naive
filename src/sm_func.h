@@ -1,5 +1,4 @@
 /* sm_func.h  --  user-defined FUNCTION sets: stored AST + interpreter
- *                (strict ISO C89).
  *
  * `CREATE f AS FUNCTION ... END` is parsed (sm_parse.c) into a statement tree
  * and stored on a per-page function map (hung off the SmWorld, so it is

@@ -1,4 +1,4 @@
-/* sm_value.c  --  scalar value implementation (strict ISO C89). */
+/* sm_value.c  --  scalar value implementation. */
 #include "sm_value.h"
 
 #include <string.h>
@@ -108,7 +108,7 @@ SmBool sm_value_equal(const SmValue *a, const SmValue *b)
 
 size_t sm_value_format(const SmValue *v, char *buf, size_t cap)
 {
-    /* No snprintf in C89: format numbers into a local scratch of known
+    /* Format numbers into a local scratch of known
      * bounded width, then copy with an explicit length cap. */
     char scratch[64];
     const char *src = "";
@@ -130,9 +130,9 @@ size_t sm_value_format(const SmValue *v, char *buf, size_t cap)
         /* whole numbers print in full (3628800, not 3.6288e+06); anything else
          * as %g. Width is bounded well under 64. */
         if (fabs(v->number) < 1e15 && floor(v->number) == v->number) {
-            sprintf(scratch, "%.0f", v->number);
+            snprintf(scratch, sizeof(scratch), "%.0f", v->number);
         } else {
-            sprintf(scratch, "%g", v->number);
+            snprintf(scratch, sizeof(scratch), "%g", v->number);
         }
         src = scratch;
         break;
@@ -140,7 +140,7 @@ size_t sm_value_format(const SmValue *v, char *buf, size_t cap)
         src = (v->string != NULL) ? v->string : "";
         break;
     case SM_VAL_COLOR:
-        sprintf(scratch, "#%06lX", v->color & 0xFFFFFFUL);
+        snprintf(scratch, sizeof(scratch), "#%06lX", v->color & 0xFFFFFFUL);
         src = scratch;
         break;
     case SM_VAL_SET:

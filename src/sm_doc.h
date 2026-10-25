@@ -1,5 +1,4 @@
 /* sm_doc.h  --  SeSaML document runtime: a .sml file as a live web page.
- *                (strict ISO C89.)
  *
  * A SeSaML document is a flat sequence of CREATE / mutation / ON-event
  * statements. Parsing produces live set state directly (design doc S12: no

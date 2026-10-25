@@ -1,4 +1,4 @@
-/* sm_doc.c  --  SeSaML document runtime implementation (strict ISO C89). */
+/* sm_doc.c  --  SeSaML document runtime implementation. */
 #include "sm_doc.h"
 #include "sm_server.h"
 
@@ -577,7 +577,7 @@ SmStatus sm_doc_load_file(SmDoc *d, const char *path, char *err, size_t errcap)
 
     f = fopen(path, "rb");
     if (f == NULL) {
-        if (err != NULL && errcap) { sprintf(err, "cannot open file"); }
+        if (err != NULL && errcap) { snprintf(err, errcap, "cannot open file"); }
         return SM_ERR_NOT_FOUND;
     }
     fseek(f, 0, SEEK_END);
@@ -601,7 +601,7 @@ SmStatus sm_doc_load_file(SmDoc *d, const char *path, char *err, size_t errcap)
 static void load_error_page(SmDoc *d, const char *msg)
 {
     char buf[512];
-    sprintf(buf,
+    snprintf(buf, sizeof(buf),
         "CREATE ErrTitle AS TextBox WITH text = \"Request failed\""
         " AT X.Center, Y.Top\n"
         "CREATE ErrMsg AS TextBox WITH text = \"%.200s\""
@@ -626,14 +626,14 @@ static SmStatus load_route(SmDoc *d, const char *route)
         char perr[192];
         if (sm_doc_load_string(d, body, perr, sizeof(perr)) != SM_OK) {
             load_error_page(d, perr);
-            sprintf(d->status, "GET %.100s  500 malformed page", route ? route : "");
+            snprintf(d->status, sizeof(d->status), "GET %.100s  500 malformed page", route ? route : "");
         } else {
-            sprintf(d->status, "GET %.120s  200 OK", route ? route : "");
+            snprintf(d->status, sizeof(d->status), "GET %.120s  200 OK", route ? route : "");
         }
         sm_free(body);
     } else {
         load_error_page(d, err);
-        sprintf(d->status, "GET %.120s  404 Not Found", route ? route : "");
+        snprintf(d->status, sizeof(d->status), "GET %.120s  404 Not Found", route ? route : "");
         st = SM_ERR_NOT_FOUND;
     }
     return st;
@@ -676,14 +676,14 @@ SmStatus sm_doc_post(SmDoc *d, const char *route, const char *body)
         char perr[192];
         if (sm_doc_load_string(d, resp, perr, sizeof(perr)) != SM_OK) {
             load_error_page(d, perr);
-            sprintf(d->status, "POST %.90s  500 malformed", route ? route : "");
+            snprintf(d->status, sizeof(d->status), "POST %.90s  500 malformed", route ? route : "");
         } else {
-            sprintf(d->status, "POST %.110s  200 OK", route ? route : "");
+            snprintf(d->status, sizeof(d->status), "POST %.110s  200 OK", route ? route : "");
         }
         sm_free(resp);
     } else {
         load_error_page(d, err);
-        sprintf(d->status, "POST %.110s  404 Not Found", route ? route : "");
+        snprintf(d->status, sizeof(d->status), "POST %.110s  404 Not Found", route ? route : "");
         st = SM_ERR_NOT_FOUND;
     }
     return st;
@@ -701,10 +701,10 @@ SmStatus sm_doc_open_file(SmDoc *d, const char *path)
     st = sm_doc_load_file(d, path, perr, sizeof(perr));
     if (st != SM_OK) {
         load_error_page(d, perr);
-        sprintf(d->status, "OPEN %.140s  failed", path);
+        snprintf(d->status, sizeof(d->status), "OPEN %.140s  failed", path);
         return SM_ERR_NOT_FOUND;
     }
-    sprintf(d->status, "OPEN %.150s", path);
+    snprintf(d->status, sizeof(d->status), "OPEN %.150s", path);
     return SM_OK;
 }
 
@@ -1129,14 +1129,14 @@ static void form_submit(SmDoc *d, SmSet *submit)
     act = sm_get_prop(submit, "action");
     if (act != NULL && act->kind == SM_VAL_STRING) {
         /* POST the urlencoded body to the action route (deferred to next paint) */
-        sprintf(d->status, "POST %.60s  (%.80s)", act->string, q);
+        snprintf(d->status, sizeof(d->status), "POST %.60s  (%.80s)", act->string, q);
         sm_free(d->pending_route);
         d->pending_route = sm_strdup(act->string);
         sm_free(d->pending_body);
         d->pending_body = sm_strdup(q);
         d->pending_kind = NAV_POST;
     } else {
-        sprintf(d->status, "submit: %.140s", q);
+        snprintf(d->status, sizeof(d->status), "submit: %.140s", q);
     }
 }
 
@@ -1255,7 +1255,7 @@ static void render_list(SmDoc *d, SmCanvas *cv, SmSet *s, int width, int height)
         if (ordered) {
             char num[12];
             SmRect nr;
-            sprintf(num, "%d.", idx);
+            snprintf(num, sizeof(num), "%d.", idx);
             nr.x = x; nr.y = y; nr.w = 22; nr.h = lh;
             cv->text_ex(cv, nr, num, DC_TEXT, SM_ALIGN_LEFT, st, 0);
         } else {

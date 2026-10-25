@@ -1,19 +1,19 @@
-/* sm_common.h  --  SeSaML runtime: shared primitives (strict ISO C89).
+/* sm_common.h  --  SeSaML runtime: shared primitives.
  *
- * This header and every module that includes it must compile clean under
- *   gcc -std=c89 -pedantic-errors -Wall -Wextra
- * so nothing later than 1990-vintage ANSI C is permitted here: no // comments,
- * no long long, no snprintf, no mixed declarations-and-code, no inline.
+ * The engine is written in portable ISO C99 and must compile clean under
+ *   gcc -std=c99 -pedantic-errors -Wall -Wextra -Werror
+ * Only sm_win32.c (the GDI backend) is allowed to use platform headers.
  */
 #ifndef SM_COMMON_H
 #define SM_COMMON_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
-/* --- Boolean spelling (C89 has no <stdbool.h>) --------------------------- */
-typedef int SmBool;
-#define SM_TRUE  1
-#define SM_FALSE 0
+/* --- Boolean spelling ------------------------------------------------------ */
+typedef bool SmBool;
+#define SM_TRUE  true
+#define SM_FALSE false
 
 /* --- Result codes --------------------------------------------------------
  * The engine never uses C++-style exceptions; every fallible call returns an

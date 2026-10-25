@@ -1,8 +1,8 @@
-/* sm_render.h  --  thin rendering/backend interface (strict ISO C89).
+/* sm_render.h  --  thin rendering/backend interface.
  *
  * Design doc S13: "Rendering backend is abstracted behind a thin interface
  * so the runtime never depends on the specific backend." Everything above
- * this line (the engine, Webcel) is pure C89 and talks only to SmCanvas /
+ * this line (the engine, Webcel) is pure portable C and talks only to SmCanvas /
  * SmApp; only the backend (sm_win32.c) includes <windows.h>. Swapping GDI for
  * another backend means reimplementing this interface and nothing else.
  */

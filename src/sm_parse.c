@@ -1,4 +1,4 @@
-/* sm_parse.c  --  SeSaML document parser (strict ISO C89).
+/* sm_parse.c  --  SeSaML document parser.
  *
  * Implements sm_doc_load_string: lex the whole .sml source, group tokens into
  * indented logical lines, then recursively descend building live set state
@@ -45,9 +45,9 @@ static void fail(PP *pp, int line, const char *msg)
     if (pp->failed) { return; }
     pp->failed = SM_TRUE;
     if (pp->err != NULL && pp->errcap > 0) {
-        /* No snprintf in C89; format into a bounded scratch then copy. */
+        /* Format into a bounded scratch, then copy into the caller's buffer. */
         char scratch[192];
-        sprintf(scratch, "line %d: %.150s", line, msg);
+        snprintf(scratch, sizeof(scratch), "line %d: %.150s", line, msg);
         {
             size_t n = strlen(scratch);
             if (n >= pp->errcap) { n = pp->errcap - 1; }
@@ -833,7 +833,7 @@ static void bind_function_events(PP *pp, const char *fn, int t0, int t1)
             SmExpr *call = NULL;
             SmSet *owner = NULL;
             SmHandler *h;
-            sprintf(src, "CALL %.100s WITH (%.100s)", fn, (ntargets > 0) ? targets[i] : "");
+            snprintf(src, sizeof(src), "CALL %.100s WITH (%.100s)", fn, (ntargets > 0) ? targets[i] : "");
             if (ntargets > 0) { owner = find_or_make(pp, targets[i], SM_KIND_SET); }
             if (sm_expr_parse(src, &call, NULL, 0) != SM_OK) { continue; }
             h = sm_doc_add_handler(pp->d, ev, owner, NULL, NULL);

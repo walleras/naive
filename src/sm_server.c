@@ -1,4 +1,4 @@
-/* sm_server.c  --  mock SeSaML route server (strict ISO C89). */
+/* sm_server.c  --  mock SeSaML route server. */
 #include "sm_server.h"
 
 #include <stdio.h>
@@ -87,7 +87,7 @@ static SmBool resolve_domain_path(const char *addr, char *path, size_t pathcap)
         page[n] = '\0';
     }
 
-    sprintf(path, "%.200s/%.100s/%.100s.sml", g_root, folder, page);
+    snprintf(path, pathcap, "%.200s/%.100s/%.100s.sml", g_root, folder, page);
     return SM_TRUE;
 }
 
@@ -117,23 +117,23 @@ SmStatus sm_server_get(const char *route, char **out_body, char *err, size_t err
         if (len > 1 && bare[len - 1] == '/') { bare[--len] = 0; }
         if (len > 4 && strcmp(bare + len - 4, ".sml") == 0) { bare[len - 4] = 0; }
         if (has_dotdot(bare) || strlen(bare) > 200) {
-            if (err != NULL && errcap > 0) { sprintf(err, "404 Not Found: %.100s", route); }
+            if (err != NULL && errcap > 0) { snprintf(err, errcap, "404 Not Found: %.100s", route); }
             return SM_ERR_NOT_FOUND;
         }
         if (strcmp(bare, "/") == 0) { strcpy(bare, "/index"); }
-        sprintf(path, "%.240s%s.sml", g_root, bare);
+        snprintf(path, sizeof(path), "%.240s%s.sml", g_root, bare);
     } else {
         /* Not a leading-slash route: read it as a domain in the virtual
          * internet ("xyz.com" -> www/xyz/index.sml, etc). */
         if (!resolve_domain_path(bare, path, sizeof(path))) {
-            if (err != NULL && errcap > 0) { sprintf(err, "404 Not Found: %.100s", route); }
+            if (err != NULL && errcap > 0) { snprintf(err, errcap, "404 Not Found: %.100s", route); }
             return SM_ERR_NOT_FOUND;
         }
     }
 
     body = read_file(path);
     if (body == NULL) {
-        if (err != NULL && errcap > 0) { sprintf(err, "404 Not Found: %.100s", route); }
+        if (err != NULL && errcap > 0) { snprintf(err, errcap, "404 Not Found: %.100s", route); }
         return SM_ERR_NOT_FOUND;
     }
     if (out_body != NULL) { *out_body = body; }
@@ -166,7 +166,7 @@ static char *build_echo_page(const char *body)
         }
         if (*b == '&') { ++b; }
         field[n] = '\0';
-        sprintf(line, "CREATE F%d AS TextBox WITH text = \"%s\" AT X.Left, Y.%d\n",
+        snprintf(line, sizeof(line), "CREATE F%d AS TextBox WITH text = \"%s\" AT X.Left, Y.%d\n",
                 idx, field, y);
         if (strlen(p) + strlen(line) < cap - 1) { strcat(p, line); }
         y += 24;
@@ -190,7 +190,7 @@ SmStatus sm_server_post(const char *route, const char *body,
     if (strcmp(bare, "/submit") == 0) {
         char *page = build_echo_page(body);
         if (page == NULL) {
-            if (err != NULL && errcap) { sprintf(err, "500 out of memory"); }
+            if (err != NULL && errcap) { snprintf(err, errcap, "500 out of memory"); }
             return SM_ERR_OOM;
         }
         if (out_body != NULL) { *out_body = page; } else { sm_free(page); }

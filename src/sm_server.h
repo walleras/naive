@@ -1,4 +1,4 @@
-/* sm_server.h  --  a mock "web server" for SeSaML routes (strict ISO C89).
+/* sm_server.h  --  a mock "web server" for SeSaML routes.
  *
  * There is no real network here (design doc S13 is candid that 1995 transport
  * couldn't sustain it). This stands in for an HTTP server that answers a route

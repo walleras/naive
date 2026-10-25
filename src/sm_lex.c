@@ -1,4 +1,4 @@
-/* sm_lex.c  --  SeSaML tokenizer implementation (strict ISO C89). */
+/* sm_lex.c  --  SeSaML tokenizer implementation. */
 #include "sm_lex.h"
 
 #include <string.h>

@@ -1,4 +1,4 @@
-/* sm_schema.c  --  forced-schema contract checking (strict ISO C89). */
+/* sm_schema.c  --  forced-schema contract checking. */
 #include "sm_schema.h"
 #include "sm_set.h"
 

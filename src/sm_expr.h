@@ -1,4 +1,4 @@
-/* sm_expr.h  --  SeSaML expression parser + evaluator (strict ISO C89).
+/* sm_expr.h  --  SeSaML expression parser + evaluator.
  *                Grammar sketch S8 (C-style precedence).
  *
  * An expression is parsed once into a small tree and retained; a Webcel cell
