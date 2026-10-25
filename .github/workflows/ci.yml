@@ -1,0 +1,25 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  core:
+    name: portable core (ISO C99)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile the core with -pedantic-errors -Werror
+        run: sh build/build.sh check
+
+  viewer:
+    name: Windows viewer
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build sesaml.exe
+        run: sh build/build.sh sml
