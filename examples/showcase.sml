@@ -1,0 +1,55 @@
+-- showcase.sml -- every HTML-parity element SeSaML supports, on one page.
+
+CREATE Title AS H1
+    WITH text = "SeSaML HTML Showcase"
+    AT X.Center, Y.10
+
+-- Text styling (styling is set membership)
+CREATE H2a AS H3 WITH text = "Text styling" AT X.Left, Y.56
+CREATE Tb AS TextBox WITH text = "bold"          AT X.Left, Y.82  MEMBER OF BOLD
+CREATE Ti AS TextBox WITH text = "italic"        AT X.120,  Y.82  MEMBER OF ITALICS
+CREATE Tu AS TextBox WITH text = "underline"     AT X.220,  Y.82  MEMBER OF UNDERLINE
+CREATE Ts AS TextBox WITH text = "strike"        AT X.10,   Y.104 MEMBER OF STRIKETHROUGH
+CREATE Tm AS TextBox WITH text = "monospace"     AT X.120,  Y.104 MEMBER OF MONOSPACE
+
+-- Colours (named CGA sets + a custom hex colour)
+CREATE Cr AS TextBox WITH text = "red"    AT X.10,  Y.130 MEMBER OF RED
+CREATE Cg AS TextBox WITH text = "green"  AT X.70,  Y.130 MEMBER OF GREEN
+CREATE Cb AS TextBox WITH text = "blue"   AT X.140, Y.130 MEMBER OF BLUE
+CREATE Cc AS TextBox WITH text = "navy #001F5B", color = #001F5B AT X.210, Y.130
+
+CREATE Rule AS HRule AT X.Left, Y.156
+
+-- Lists
+CREATE LTitle AS H3 WITH text = "Lists" AT X.Left, Y.170
+CREATE Ol AS OL AT X.Left, Y.196
+CREATE Ol1 AS ListItem WITH text = "First, ordered"  MEMBER OF Ol
+CREATE Ol2 AS ListItem WITH text = "Second, ordered" MEMBER OF Ol
+CREATE Ul AS UL AT X.Left, Y.256
+CREATE Ul1 AS ListItem WITH text = "A bullet point"   MEMBER OF Ul
+CREATE Ul2 AS ListItem WITH text = "Another in bold"  MEMBER OF Ul MEMBER OF BOLD
+
+-- Table (first row is a header)
+CREATE TT AS H3 WITH text = "Table" AT X.360, Y.56
+CREATE Grid AS Table AT X.360, Y.82
+CREATE Rh AS Row MEMBER OF Grid
+CREATE Rh1 AS Column WITH content = "Element" MEMBER OF Rh
+CREATE Rh2 AS Column WITH content = "HTML tag" MEMBER OF Rh
+CREATE Ra AS Row MEMBER OF Grid
+CREATE Ra1 AS Column WITH content = "Heading"  MEMBER OF Ra
+CREATE Ra2 AS Column WITH content = "h1..h6"   MEMBER OF Ra
+CREATE Rb AS Row MEMBER OF Grid
+CREATE Rb1 AS Column WITH content = "Bullets"  MEMBER OF Rb
+CREATE Rb2 AS Column WITH content = "ul / ol"  MEMBER OF Rb
+
+-- A form: checkbox, radio group, text field, submit
+CREATE FT AS H3 WITH text = "Form controls" AT X.360, Y.196
+CREATE Chk AS Checkbox WITH label = "I agree" AT X.360, Y.222
+CREATE Opt1 AS Radio WITH label = "Small", group = "size" AT X.360, Y.250
+CREATE Opt2 AS Radio WITH label = "Large", group = "size" AT X.450, Y.250
+CREATE Field AS TextInput WITH placeholder = "your name" AT X.360, Y.280
+CREATE Send AS Button WITH label = "Submit", action = "/about" AT X.360, Y.312
+
+-- A real bitmap image and a hyperlink
+CREATE Pic AS Image WITH src = "logo.bmp", width = 160, height = 80 AT X.360, Y.348
+CREATE Link AS TextBox WITH text = "a hyperlink to /docs", link = "/docs" AT X.Left, Y.320

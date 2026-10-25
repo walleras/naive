@@ -1,0 +1,44 @@
+-- functions.sml -- user-defined FUNCTION sets. Bodies use Lua-style control
+-- flow (IF/ELSEIF/ELSE/END, WHILE..DO..END, LOCAL, RETURN, ==, ~=, and/or/not)
+-- with the SeSaML verbs ADD / REMOVE / SET / MOVE inside.
+
+CREATE Title AS H2
+    WITH text = "Functions"
+    AT X.Center, Y.10
+
+CREATE Toggler AS Button, Blue
+    WITH label = "Click me: I flip Blue <-> Red"
+    AT X.Center, Y.110
+
+-- "AS FUNCTION, OnClick, Toggler" = run this whenever Toggler is clicked.
+CREATE flip AS FUNCTION, OnClick, Toggler
+    TAKES btn
+    IF btn IS Blue THEN
+        MOVE btn FROM Blue TO Red
+    ELSE
+        MOVE btn FROM Red TO Blue
+    END
+END
+
+CREATE Result AS TextBox
+    WITH text = "sum_to(10), computed at load:"
+    AT X.Center, Y.170
+
+CREATE Total AS TextBox
+    WITH content = "0"
+    AT X.Center, Y.200
+
+CREATE sum_to AS FUNCTION
+    TAKES n
+    LOCAL total = 0
+    LOCAL i = 1
+    WHILE i <= n.value DO
+        total = total.value + i.value
+        i = i.value + 1
+    END
+    RETURN total.value
+END
+
+CREATE show AS FUNCTION, OnLoad
+    SET Total.content TO sum_to(10)
+END

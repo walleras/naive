@@ -1,0 +1,16 @@
+# build output
+build/*.o
+build/*.exe
+build/*.obj
+
+# tests are kept local (not part of the published repo)
+tests/
+
+# editor / OS / tool litter
+*.bak
+*.orig
+*~
+Thumbs.db
+.vscode/
+.idea/
+.claude/

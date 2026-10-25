@@ -1,0 +1,17 @@
+-- www/docs.sml -- served for route "/docs"
+
+CREATE Home AS TextBox
+    WITH text = "<- Home", link = "/"
+    AT X.Left, Y.Top
+
+CREATE Title AS TextBox
+    WITH text = "Documentation"
+    AT X.Center, Y.Top
+
+CREATE Body AS TextBox
+    WITH text = "Everything is a set. Membership is the only state."
+    AT X.Center, Y.Center
+
+CREATE ToAbout AS TextBox
+    WITH text = "Next: About", link = "/about"
+    AT X.Center, Y.300

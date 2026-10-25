@@ -1,0 +1,21 @@
+-- www/xyz/index.sml -- served for the virtual domain "xyz.com"
+
+CREATE Title AS H1
+    WITH text = "Welcome to xyz.com"
+    AT X.Center, Y.30
+
+CREATE Intro AS TextBox
+    WITH text = "A different site, on the same virtual internet -- a separate folder under www/."
+    AT X.Center, Y.80
+
+CREATE ToAbout AS TextBox
+    WITH text = "Read more about xyz.com ->", link = "xyz.com/about"
+    AT X.Center, Y.130
+
+CREATE ToMyThoughts AS TextBox
+	WITH text = "My Thoughts", link = "xyz.com/my_thoughts"
+	AT X.Center, Y.210
+
+CREATE HomeLink AS TextBox
+    WITH text = "<- back to the SeSaML site", link = "/"
+    AT X.Center, Y.170

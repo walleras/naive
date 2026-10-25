@@ -1,0 +1,35 @@
+-- hello.sml -- a SeSaML page. Everything on it is a set; membership is state.
+
+CREATE Title AS TextBox
+    WITH text = "Welcome to SeSaML"
+    AT X.Center, Y.Top
+
+CREATE Greeting AS TextBox
+    WITH text = "Hello, World -- there is no DOM here, only sets."
+    AT X.Center, Y.Center
+
+CREATE HideButton AS Button
+    WITH label = "Hide Greeting"
+    AT X.Center, Y.300
+    ON CLICK REMOVE Greeting FROM VISIBLE
+
+CREATE ShowButton AS Button
+    WITH label = "Show Greeting"
+    AT X.Center, Y.350
+    ON CLICK ADD Greeting TO VISIBLE
+
+CREATE NameField AS TextInput
+    WITH placeholder = "Type your name (click me first)"
+    AT X.Left, Y.200
+
+-- A container whose members hide together: one REMOVE hides both items,
+-- because visibility is membership and it propagates through the container.
+CREATE Notes AS SET
+
+CREATE NoteOne AS TextBox WITH text = "* sets are the only primitive" AT X.Right, Y.120 MEMBER OF Notes
+CREATE NoteTwo AS TextBox WITH text = "* membership is the only state" AT X.Right, Y.150 MEMBER OF Notes
+
+CREATE HideNotes AS Button
+    WITH label = "Hide Notes"
+    AT X.Right, Y.200
+    ON CLICK REMOVE Notes FROM VISIBLE

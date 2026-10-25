@@ -1,0 +1,4 @@
+# store LF in the repo (build.sh must have LF endings to run under sh)
+* text=auto eol=lf
+*.bmp binary
+*.exe binary

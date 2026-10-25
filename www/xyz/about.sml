@@ -1,0 +1,17 @@
+-- www/xyz/about.sml -- served for "xyz.com/about"
+
+CREATE Title AS H2
+    WITH text = "About xyz.com"
+    AT X.Center, Y.30
+
+CREATE Body AS TextBox
+    WITH text = "Just a second site living at www/xyz/, addressed by domain name instead of a route."
+    AT X.Center, Y.80
+
+CREATE Back AS TextBox
+    WITH text = "<- xyz.com", link = "xyz.com"
+    AT X.Center, Y.120
+
+CREATE HomeLink AS TextBox
+    WITH text = "<- back to the SeSaML site", link = "/"
+    AT X.Center, Y.160

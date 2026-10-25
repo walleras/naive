@@ -1,0 +1,535 @@
+-- demo.sml -- the SeSaML playground: tabs, a counter, colours, and a little maths.
+--
+-- No HTML, no CSS, no JavaScript. Every widget is a set and every interaction
+-- is a membership change:
+--   * a tab is a SET of widgets; switching tabs is REMOVE/ADD on VISIBLE
+--   * a colour or a font style is a set; painting a widget is ADD w TO RED
+--   * logic lives in FUNCTION sets (Lua-style IF / WHILE / LOCAL / RETURN)
+
+DEFINE GRID X 720
+
+CREATE Title AS H1
+    WITH text = "SeSaML Playground"
+    AT X.Center, Y.8
+
+CREATE Tagline AS TextBox
+    WITH text = "Every widget is a set. Every click is a membership change."
+    AT X.Center, Y.50
+    MEMBER OF ITALICS, GRAY
+
+-- ---------------------------------------------------------------- tab bar --
+CREATE TabCounter AS Button
+    WITH label = "Counter"
+    AT X.200, Y.86
+    ON CLICK tab(PCounter, TabCounter)
+
+CREATE TabColours AS Button
+    WITH label = "Colours"
+    AT X.285, Y.86
+    ON CLICK tab(PColours, TabColours)
+
+CREATE TabMaths AS Button
+    WITH label = "Maths"
+    AT X.370, Y.86
+    ON CLICK tab(PMaths, TabMaths)
+
+CREATE TabAbout AS Button
+    WITH label = "About"
+    AT X.445, Y.86
+    ON CLICK tab(PAbout, TabAbout)
+
+CREATE TabRule AS HRule AT X.Left, Y.122
+
+-- Each panel is just a set. A widget that is MEMBER OF a panel is visible only
+-- while the panel itself is a member of VISIBLE.
+CREATE PCounter AS SET
+CREATE PColours AS SET
+CREATE PMaths   AS SET
+CREATE PAbout   AS SET
+
+-- ------------------------------------------------------------ shared logic --
+-- tab(panel, button): hide every panel, show one, and light up its tab.
+CREATE tab AS FUNCTION
+    TAKES p, b
+    REMOVE PCounter FROM VISIBLE
+    REMOVE PColours FROM VISIBLE
+    REMOVE PMaths   FROM VISIBLE
+    REMOVE PAbout   FROM VISIBLE
+    REMOVE TabCounter FROM BOLD
+    REMOVE TabColours FROM BOLD
+    REMOVE TabMaths   FROM BOLD
+    REMOVE TabAbout   FROM BOLD
+    REMOVE TabCounter FROM BLUE
+    REMOVE TabColours FROM BLUE
+    REMOVE TabMaths   FROM BLUE
+    REMOVE TabAbout   FROM BLUE
+    ADD p TO VISIBLE
+    ADD b TO BOLD
+    ADD b TO BLUE
+END
+
+-- paint(widget, colour): leave every colour set, then join the chosen one.
+CREATE paint AS FUNCTION
+    TAKES w, c
+    REMOVE w FROM BLACK
+    REMOVE w FROM WHITE
+    REMOVE w FROM RED
+    REMOVE w FROM GREEN
+    REMOVE w FROM BLUE
+    REMOVE w FROM CYAN
+    REMOVE w FROM MAGENTA
+    REMOVE w FROM YELLOW
+    REMOVE w FROM GRAY
+    REMOVE w FROM DARK_RED
+    REMOVE w FROM DARK_GREEN
+    REMOVE w FROM DARK_BLUE
+    REMOVE w FROM DARK_CYAN
+    REMOVE w FROM DARK_MAGENTA
+    REMOVE w FROM DARK_YELLOW
+    REMOVE w FROM DARK_GRAY
+    ADD w TO c
+END
+
+-- toggle(widget, style): flip membership of a styling set.
+CREATE toggle AS FUNCTION
+    TAKES w, s
+    IF w IS s THEN
+        REMOVE w FROM s
+    ELSE
+        ADD w TO s
+    END
+END
+
+-- ================================================================ COUNTER ==
+CREATE Tally AS SET
+
+CREATE CounterHead AS H3
+    WITH text = "A counter, driven by functions"
+    AT X.Center, Y.140
+    MEMBER OF PCounter
+
+CREATE CountShow AS H1
+    WITH text = "0"
+    AT X.Center, Y.182
+    MEMBER OF PCounter
+
+CREATE Minus10 AS Button
+    WITH label = "-10"
+    AT X.214, Y.250
+    MEMBER OF PCounter
+    ON CLICK bump(-10)
+
+CREATE Minus1 AS Button
+    WITH label = "-1"
+    AT X.272, Y.250
+    MEMBER OF PCounter
+    ON CLICK bump(-1)
+
+CREATE Plus1 AS Button
+    WITH label = "+1"
+    AT X.330, Y.250
+    MEMBER OF PCounter
+    ON CLICK bump(1)
+
+CREATE Plus10 AS Button
+    WITH label = "+10"
+    AT X.388, Y.250
+    MEMBER OF PCounter
+    ON CLICK bump(10)
+
+CREATE Zero AS Button
+    WITH label = "Reset"
+    AT X.446, Y.250
+    MEMBER OF PCounter
+    ON CLICK reset()
+
+CREATE CountInfo AS TextBox
+    WITH text = "zero"
+    AT X.Center, Y.300
+    MEMBER OF PCounter
+
+CREATE CountBar AS TextBox
+    WITH text = "...................."
+    AT X.Center, Y.336
+    MEMBER OF PCounter, MONOSPACE
+
+CREATE CountHint AS TextBox
+    WITH text = "the bar fills from 0 to 20; negatives go red, positives go green"
+    AT X.Center, Y.370
+    MEMBER OF PCounter, GRAY
+
+-- bar(n): a WHILE loop that builds "#####..........." with Lua's .. operator.
+CREATE bar AS FUNCTION
+    TAKES n
+    LOCAL s = ""
+    LOCAL i = 1
+    LOCAL fill = n.value
+    IF fill < 0 THEN
+        fill = 0
+    END
+    IF fill > 20 THEN
+        fill = 20
+    END
+    WHILE i <= 20 DO
+        IF i <= fill.value THEN
+            s = s.value .. "#"
+        ELSE
+            s = s.value .. "."
+        END
+        i = i.value + 1
+    END
+    RETURN s.value
+END
+
+CREATE refresh AS FUNCTION
+    LOCAL kind = "even"
+    IF Tally.value % 2 ~= 0 THEN
+        kind = "odd"
+    END
+    SET CountShow TO Tally.value
+    SET CountBar TO bar(Tally.value)
+    IF Tally.value < 0 THEN
+        paint(CountShow, RED)
+        SET CountInfo TO Tally.value .. " is negative and " .. kind.value
+    ELSEIF Tally.value == 0 THEN
+        paint(CountShow, BLACK)
+        SET CountInfo TO "zero"
+    ELSE
+        paint(CountShow, GREEN)
+        SET CountInfo TO Tally.value .. " is positive and " .. kind.value
+    END
+END
+
+CREATE bump AS FUNCTION
+    TAKES by
+    SET Tally TO Tally.value + by.value
+    refresh()
+END
+
+CREATE reset AS FUNCTION
+    SET Tally TO 0
+    refresh()
+END
+
+-- ================================================================ COLOURS ==
+CREATE ColoursHead AS H3
+    WITH text = "Colours and styles are sets"
+    AT X.Center, Y.140
+    MEMBER OF PColours
+
+CREATE Sample AS H2
+    WITH text = "The quick brown fox"
+    AT X.Center, Y.182
+    MEMBER OF PColours
+
+CREATE ColorName AS TextBox
+    WITH text = "(no colour set yet)"
+    AT X.Center, Y.226
+    MEMBER OF PColours, GRAY
+
+CREATE PaintRed AS Button
+    WITH label = "Red"
+    AT X.128, Y.268
+    MEMBER OF PColours, RED
+    ON CLICK paint(Sample, RED)
+    ON CLICK SET ColorName TO "Sample is in the set RED"
+
+CREATE PaintGreen AS Button
+    WITH label = "Green"
+    AT X.188, Y.268
+    MEMBER OF PColours, GREEN
+    ON CLICK paint(Sample, GREEN)
+    ON CLICK SET ColorName TO "Sample is in the set GREEN"
+
+CREATE PaintBlue AS Button
+    WITH label = "Blue"
+    AT X.258, Y.268
+    MEMBER OF PColours, BLUE
+    ON CLICK paint(Sample, BLUE)
+    ON CLICK SET ColorName TO "Sample is in the set BLUE"
+
+CREATE PaintMagenta AS Button
+    WITH label = "Magenta"
+    AT X.319, Y.268
+    MEMBER OF PColours, MAGENTA
+    ON CLICK paint(Sample, MAGENTA)
+    ON CLICK SET ColorName TO "Sample is in the set MAGENTA"
+
+CREATE PaintCyan AS Button
+    WITH label = "Cyan"
+    AT X.405, Y.268
+    MEMBER OF PColours, CYAN
+    ON CLICK paint(Sample, CYAN)
+    ON CLICK SET ColorName TO "Sample is in the set CYAN"
+
+CREATE PaintGray AS Button
+    WITH label = "Gray"
+    AT X.470, Y.268
+    MEMBER OF PColours, GRAY
+    ON CLICK paint(Sample, GRAY)
+    ON CLICK SET ColorName TO "Sample is in the set GRAY"
+
+CREATE PaintBlack AS Button
+    WITH label = "Black"
+    AT X.533, Y.268
+    MEMBER OF PColours, BLACK
+    ON CLICK paint(Sample, BLACK)
+    ON CLICK SET ColorName TO "Sample is in the set BLACK"
+
+CREATE StyleBold AS Button
+    WITH label = "Bold"
+    AT X.191, Y.318
+    MEMBER OF PColours, BOLD
+    ON CLICK toggle(Sample, BOLD)
+
+CREATE StyleItalic AS Button
+    WITH label = "Italic"
+    AT X.257, Y.318
+    MEMBER OF PColours, ITALICS
+    ON CLICK toggle(Sample, ITALICS)
+
+CREATE StyleUnder AS Button
+    WITH label = "Underline"
+    AT X.317, Y.318
+    MEMBER OF PColours, UNDERLINE
+    ON CLICK toggle(Sample, UNDERLINE)
+
+CREATE StyleStrike AS Button
+    WITH label = "Strike"
+    AT X.405, Y.318
+    MEMBER OF PColours, STRIKETHROUGH
+    ON CLICK toggle(Sample, STRIKETHROUGH)
+
+CREATE StyleMono AS Button
+    WITH label = "Mono"
+    AT X.473, Y.318
+    MEMBER OF PColours, MONOSPACE
+    ON CLICK toggle(Sample, MONOSPACE)
+
+CREATE Cycler AS Button
+    WITH label = "Cycle: red > green > blue > magenta"
+    AT X.Center, Y.370
+    MEMBER OF PColours
+    ON CLICK cycle(Sample)
+
+-- cycle(widget): an IF / ELSEIF chain walks the widget round four colour sets.
+CREATE cycle AS FUNCTION
+    TAKES w
+    IF w IS RED THEN
+        paint(w, GREEN)
+        SET ColorName TO "Sample is in the set GREEN"
+    ELSEIF w IS GREEN THEN
+        paint(w, BLUE)
+        SET ColorName TO "Sample is in the set BLUE"
+    ELSEIF w IS BLUE THEN
+        paint(w, MAGENTA)
+        SET ColorName TO "Sample is in the set MAGENTA"
+    ELSE
+        paint(w, RED)
+        SET ColorName TO "Sample is in the set RED"
+    END
+END
+
+-- ================================================================== MATHS ==
+CREATE MathsHead AS H3
+    WITH text = "Type a number, press Enter, pick a function"
+    AT X.Center, Y.140
+    MEMBER OF PMaths
+
+CREATE Input AS TextInput
+    WITH content = "10"
+    AT X.Center, Y.182
+    MEMBER OF PMaths
+
+CREATE BtnFact AS Button
+    WITH label = "n!"
+    AT X.192, Y.230
+    MEMBER OF PMaths
+    ON CLICK do_fact()
+
+CREATE BtnFib AS Button
+    WITH label = "fib(n)"
+    AT X.245, Y.230
+    MEMBER OF PMaths
+    ON CLICK do_fib()
+
+CREATE BtnPrime AS Button
+    WITH label = "prime?"
+    AT X.308, Y.230
+    MEMBER OF PMaths
+    ON CLICK do_prime()
+
+CREATE BtnCollatz AS Button
+    WITH label = "collatz"
+    AT X.383, Y.230
+    MEMBER OF PMaths
+    ON CLICK do_collatz()
+
+CREATE BtnSum AS Button
+    WITH label = "sum 1..n"
+    AT X.455, Y.230
+    MEMBER OF PMaths
+    ON CLICK do_sum()
+
+CREATE MathOut AS H3
+    WITH text = "?"
+    AT X.Center, Y.290
+    MEMBER OF PMaths
+
+CREATE MathHow AS TextBox
+    WITH text = "(results appear here)"
+    AT X.Center, Y.330
+    MEMBER OF PMaths, GRAY
+
+-- fact(n): recursion.
+CREATE fact AS FUNCTION
+    TAKES n
+    IF n.value <= 1 THEN RETURN 1 END
+    RETURN n.value * fact(n.value - 1)
+END
+
+-- fib(n): iteration with LOCAL variables and a WHILE loop.
+CREATE fib AS FUNCTION
+    TAKES n
+    LOCAL a = 0
+    LOCAL b = 1
+    LOCAL t = 0
+    LOCAL i = 0
+    WHILE i < n.value DO
+        t = a.value + b.value
+        a = b.value
+        b = t.value
+        i = i.value + 1
+    END
+    RETURN a.value
+END
+
+-- is_prime(n): trial division, returning from inside the loop.
+CREATE is_prime AS FUNCTION
+    TAKES n
+    IF n.value < 2 THEN RETURN 0 END
+    LOCAL d = 2
+    WHILE d.value * d.value <= n.value DO
+        IF n.value % d.value == 0 THEN RETURN 0 END
+        d = d.value + 1
+    END
+    RETURN 1
+END
+
+-- collatz(n): how many halve-or-triple-plus-one steps to reach 1.
+CREATE collatz AS FUNCTION
+    TAKES n
+    LOCAL x = n.value
+    LOCAL steps = 0
+    WHILE x.value > 1 DO
+        IF x.value % 2 == 0 THEN
+            x = x.value / 2
+        ELSE
+            x = 3 * x.value + 1
+        END
+        steps = steps.value + 1
+    END
+    RETURN steps.value
+END
+
+CREATE sum_to AS FUNCTION
+    TAKES n
+    LOCAL total = 0
+    LOCAL i = 1
+    WHILE i.value <= n.value DO
+        total = total.value + i.value
+        i = i.value + 1
+    END
+    RETURN total.value
+END
+
+CREATE do_fact AS FUNCTION
+    IF Input.value < 0 or Input.value > 20 THEN
+        SET MathOut TO "pick 0 .. 20"
+        SET MathHow TO "past 20! a double stops being exact"
+        RETURN
+    END
+    SET MathOut TO Input.value .. "! = " .. fact(Input.value)
+    SET MathHow TO "recursion: fact(n) = n * fact(n - 1)"
+END
+
+CREATE do_fib AS FUNCTION
+    IF Input.value < 0 or Input.value > 70 THEN
+        SET MathOut TO "pick 0 .. 70"
+        SET MathHow TO "past fib(70) a double stops being exact"
+        RETURN
+    END
+    SET MathOut TO "fib(" .. Input.value .. ") = " .. fib(Input.value)
+    SET MathHow TO "a WHILE loop with three LOCALs"
+END
+
+CREATE do_prime AS FUNCTION
+    IF is_prime(Input.value) == 1 THEN
+        SET MathOut TO Input.value .. " is prime"
+    ELSE
+        SET MathOut TO Input.value .. " is not prime"
+    END
+    SET MathHow TO "trial division; RETURN from inside the loop"
+END
+
+CREATE do_collatz AS FUNCTION
+    IF Input.value < 1 or Input.value > 1000000 THEN
+        SET MathOut TO "pick 1 .. 1000000"
+        SET MathHow TO "the Collatz walk"
+        RETURN
+    END
+    SET MathOut TO Input.value .. " reaches 1 in " .. collatz(Input.value) .. " steps"
+    SET MathHow TO "even: halve it. odd: triple it and add one."
+END
+
+CREATE do_sum AS FUNCTION
+    SET MathOut TO "1 + 2 + ... + " .. Input.value .. " = " .. sum_to(Input.value)
+    SET MathHow TO "a WHILE loop. (Gauss: n * (n + 1) / 2 = " .. Input.value * (Input.value + 1) / 2 .. ")"
+END
+
+-- ================================================================== ABOUT ==
+CREATE AboutHead AS H3
+    WITH text = "What you are looking at"
+    AT X.Center, Y.140
+    MEMBER OF PAbout
+
+CREATE About1 AS TextBox
+    WITH text = "This page is one .sml file: no HTML, no CSS, no JavaScript."
+    AT X.Center, Y.185
+    MEMBER OF PAbout
+
+CREATE About2 AS TextBox
+    WITH text = "Tabs are sets of widgets; a tab switch is REMOVE / ADD on VISIBLE."
+    AT X.Center, Y.215
+    MEMBER OF PAbout
+
+CREATE About3 AS TextBox
+    WITH text = "Colours and font styles are sets; painting is ADD widget TO RED."
+    AT X.Center, Y.245
+    MEMBER OF PAbout
+
+CREATE About4 AS TextBox
+    WITH text = "Logic is FUNCTION sets with Lua-style IF, WHILE, LOCAL and RETURN."
+    AT X.Center, Y.275
+    MEMBER OF PAbout
+
+CREATE About5 AS TextBox
+    WITH text = "Switch to the Counter tab and watch a membership change drive it all."
+    AT X.Center, Y.305
+    MEMBER OF PAbout
+
+CREATE AboutLink AS TextBox
+    WITH text = "-> more examples", link = "/examples"
+    AT X.Center, Y.355
+    MEMBER OF PAbout
+
+-- ============================================================ footer + boot ==
+CREATE Home AS TextBox
+    WITH text = "<- Home", link = "/"
+    AT X.Left, Y.470
+
+-- OnLoad: run once when the page opens. Show the first tab and prime the counter.
+CREATE boot AS FUNCTION, OnLoad
+    tab(PCounter, TabCounter)
+    reset()
+END
