@@ -141,7 +141,7 @@ SmStatus sm_server_get(const char *route, char **out_body, char *err, size_t err
 }
 
 /* Build a Naive page that echoes the fields of an urlencoded POST body -- the
- * dynamic response a 1995 CGI script would return. */
+ * dynamic response a CGI script would return. */
 static char *build_echo_page(const char *body)
 {
     size_t cap = 4096;

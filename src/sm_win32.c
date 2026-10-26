@@ -4,9 +4,6 @@
  * dialect but compiled with relaxed pedantry because <windows.h> is not
  * strict-ISO-C-clean. Everything it talks to above the OS line (SmCanvas,
  * SmApp) is defined in the portable sm_render.h.
- *
- * In the 1995 counterfactual this stands in for the hand-rolled GDI wrapper a
- * competent C programmer of the era would already have had (design doc S13).
  */
 #include "sm_render.h"
 
@@ -137,8 +134,7 @@ static int cv_text_width_ex(SmCanvas *cv, const char *s, unsigned style, int px)
 }
 
 /* Load a .bmp from disk and stretch-blit it into `r`. (Windows' LoadImage only
- * decodes BMP; GIF/JPEG would need a separate decoder -- a period-honest
- * limitation, since 1995 GIF used patented LZW.) */
+ * decodes BMP; GIF/JPEG would need a separate decoder.) */
 static SmBool cv_draw_image(SmCanvas *cv, SmRect r, const char *path)
 {
     GdiCanvas *g = (GdiCanvas *)cv->impl;

@@ -127,9 +127,6 @@ Naive is an experiment, not a product. Network transport is mocked, there is one
 (Windows) backend, `SEND` is recorded but does nothing, and formulas see only
 numbers, strings and sets. The language is deliberately small.
 
-The project was first written to strict ISO C89 as a "could this have been built in
-1995?" exercise. That version lives on the `c89` branch; `main` is C99.
-
 ## License
 
 [MIT](LICENSE).
